@@ -23,7 +23,7 @@ public class DbUtils {
     private void createDbConnection(String username, String password){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/as2024", username, password);
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ash2024", username, password);
             System.out.println("Connection successful!");
             System.out.println();
         }catch (Exception e){
@@ -46,18 +46,18 @@ public class DbUtils {
         return available;
     }
 
-    public boolean addUser (User user) {
+    public boolean addUser(User user){
         boolean success = false;
-        try {
-            if (checkIfUsernameAvailable(user.getUsername())) {
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (username, password) VALUES ( ? , ? )");
+        if (checkIfUsernameAvailable(user.getUsername())) {
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password) VALUES (?, ?)");
                 preparedStatement.setString(1, user.getUsername());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.executeUpdate();
                 success = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }catch (SQLException e){
-            e.printStackTrace();
         }
         return success;
     }
@@ -83,7 +83,7 @@ public class DbUtils {
 
     public void addProduct(Product product) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO product (description, price, count) VALUES ( ? , ? , ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products (description, price, count) VALUES ( ? , ? , ?)");
             preparedStatement.setString(1, product.getDescription());
             preparedStatement.setFloat(2, product.getPrice());
             preparedStatement.setInt(3, product.getCount());
@@ -123,6 +123,45 @@ public class DbUtils {
         }
         return user;
 
+    }
+
+    public List<Product> getProductByUserSecret(String secret){
+        List<Product> products = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("SELECT  p.description, p.price " +
+                            "FROM users u INNER JOIN users_products_map upm ON u.id = upm.user_id " +
+                            "INNER JOIN products p ON upm.product_id = p.id " +
+                            "WHERE u.secret = ?");
+            preparedStatement.setString(1, secret);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                String description = resultSet.getString(1);
+                float price = resultSet.getFloat(2);
+                Product p = new Product(description, price, 0);
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
+    public User getUserBySecret(String secret){
+        User user = null;
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE secret = ?");
+            ps.setString(1, secret);
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()){
+                int id = resultSet.getInt(1);
+                user = new User();
+                user.setId(id);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 
 

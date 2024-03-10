@@ -32,7 +32,8 @@
         <property name="team1" type="string" column="team1"/>
         <property name="team2" type="string" column="team2"/>
         <property name="date" type="date" column="date"/>
-        <property name="result" type="string" column="result"/>
+        <property name="resultTeam1" type="int" column="resultTeam1"/>
+        <property name="resultTeam2" type="date" column="resultTeam2"/>
         <property name="corners" type="string" column="corners"/>
     </class>
 

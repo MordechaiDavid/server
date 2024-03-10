@@ -5,8 +5,8 @@ public class Errors {
     public static final int ERROR_SIGN_UP_NO_PASSWORD = 2;
     public static final int ERROR_SIGN_UP_PASSWORDS_DONT_MATCH = 3;
     public static final int ERROR_SIGN_UP_USERNAME_TAKEN = 4;
-    public static final int ERROR_LOGIN_WRONG_CREDS = 5;
-    public static final int ERROR_NO_SUCH_USERNAME = 6;
+    public static final int PASSWORD_IS_WEEK = 5;
+    public static final int ERROR_LOGIN_WRONG_CREDS = 6;
     public static final int ERROR_SECRET_WAS_NOT_SENT = 7;
     public static final int ERROR_NO_SUCH_USER = 8;
 

@@ -1,7 +1,7 @@
 package com.ashcollege;
 
 
-import com.ashcollege.entities.Client;
+import com.ashcollege.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +41,30 @@ public class Persist {
     }
 
     public <T> List<T> loadList(Class<T> clazz) {
-        try (Session session = this.getQuerySession()) {
-            String hql = "FROM " + clazz.getName();
-            return session.createQuery(hql, clazz).list();
-        }
+        return  this.sessionFactory.getCurrentSession().createQuery("FROM User ").list();
     }
-
+    public User login (String username, String password) {
+        try {
+            return (User) this.sessionFactory.getCurrentSession().createQuery("FROM User WHERE username = :username AND password = :password")
+                    .setParameter("username", username)
+                    .setParameter("password", password)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public boolean getUserByUserName (String username) {
+        boolean exists = false;
+        User user =(User) this.sessionFactory.getCurrentSession().createQuery(
+                        "FROM User WHERE username = :username ")
+                .setParameter("username", username)
+                .setMaxResults(1)
+                .uniqueResult();
+        if (user != null)
+            exists =true;
+        return  exists;
+    }
 
 
 

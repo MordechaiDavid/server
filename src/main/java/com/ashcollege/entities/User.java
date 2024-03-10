@@ -9,18 +9,18 @@ public class User {
     private String password;
     private String secret;
 
-    public User(int id, String username, String password) {
-        this(username, password);
+    public User(int id, String username, String password ,String secret) {
+        this(username, password ,secret);
         this.id = id;
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String secret) {
         this.username = username;
         this.password = password;
+        this.secret = secret;
     }
 
     public User() {
-
     }
 
 

@@ -12,7 +12,9 @@ public class Match {
     private String team1;
     private String team2;
     private LocalDateTime date;
-    private String result;
+    private int resultTeam1;
+    private int resultTeam2;
+    private int winner;
     private String corners;
 
 
@@ -48,19 +50,39 @@ public class Match {
         this.date = date;
     }
 
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
     public String getCorners() {
         return corners;
     }
 
     public void setCorners(String corners) {
         this.corners = corners;
+    }
+
+    public int getResultTeam1() {
+        return resultTeam1;
+    }
+
+    public void setResultTeam1(int resultTeam1) {
+        this.resultTeam1 = resultTeam1;
+    }
+
+    public int getResultTeam2() {
+        return resultTeam2;
+    }
+
+    public void setResultTeam2(int resultTeam2) {
+        this.resultTeam2 = resultTeam2;
+    }
+    public int getWinner() {
+        return winner;
+    }
+
+    public void setWinner() {
+        int winner=0;
+        if(resultTeam1>resultTeam2)
+            winner =1;
+        if(resultTeam1<resultTeam2)
+            winner =2;
+        this.winner = winner;
     }
 }

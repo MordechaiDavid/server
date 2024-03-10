@@ -1,11 +1,11 @@
 package com.ashcollege.controllers;
 
 import com.ashcollege.Persist;
-import com.ashcollege.entities.Client;
 import com.ashcollege.entities.User;
 import com.ashcollege.responses.BasicResponse;
 import com.ashcollege.responses.LoginResponse;
 import com.ashcollege.utils.DbUtils;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.ashcollege.utils.Errors.*;
+
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -27,20 +29,16 @@ public class GeneralController {
     private Persist persist;
 
 
-    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object test () {
-        return "Hello From Server";
-    }
 
 
-    @RequestMapping (value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping (value = "login", method = {RequestMethod.GET, RequestMethod.POST})
     public BasicResponse login (String username, String password) {
         BasicResponse basicResponse = null;
         boolean success = false;
         Integer errorCode = null;
-        if (username != null && username.length() > 0) {
-            if (password != null && password.length() > 0) {
-                User user = dbUtils.login(username, password);
+        if (!username.isEmpty()) {
+            if (!password.isEmpty()) {
+                User user = persist.login(username, password);
                 if (user != null) {
                     basicResponse = new LoginResponse(true, errorCode, user.getId(), user.getSecret());
                 } else {
@@ -60,18 +58,52 @@ public class GeneralController {
 
     @RequestMapping (value = "add-user")
     public boolean addUser (String username, String password) {
-        int a;
-        User userToAdd = new User(username, password);
+        Faker faker = new Faker();
+        User userToAdd = new User(username, password ,faker.lorem().word());
         return dbUtils.addUser(userToAdd);
     }
 
     @RequestMapping (value = "get-users")
     public List<User> getUsers () {
-        return dbUtils.getAllUsers();
+        List <User> users = persist.loadList(User.class);
+        return users;
     }
+    @RequestMapping(value = "create-account")
+    public BasicResponse createAccount(String username, String password, String password1) {
+        BasicResponse basicResponse = null;
+        Integer errorCode = null;
+        boolean success = false;
+        if (!username.isEmpty()) {
+            if (!password.isEmpty()) {
+                if (password.equals(password1)) {
+                    if (this.isStrongPassword(password)) {
+                        if (!persist.getUserByUserName(username)) {
+                            Faker faker = new Faker();
+                            User user = new User(username, password ,faker.lorem().word());
+                            persist.save(user);
+                            success = true;
+                        } else {
+                            errorCode = ERROR_SIGN_UP_USERNAME_TAKEN ;
+                        }}
+                    else{
+                         errorCode =PASSWORD_IS_WEEK ;
+                    }
+                } else {
+                     errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;
+                }
+            } else {
+                errorCode = ERROR_SIGN_UP_NO_PASSWORD;
+            }
+        } else errorCode = ERROR_SIGN_UP_NO_USERNAME;
+         basicResponse  = new BasicResponse(success,errorCode);
+         return basicResponse;
 
-
-
+    }
+    private boolean isStrongPassword (String pass){
+        boolean isStrong = false;
+        if (pass.length() >= 6) isStrong = true;
+        return isStrong;
+    }
 
 }
 

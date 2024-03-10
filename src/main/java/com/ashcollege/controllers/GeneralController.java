@@ -63,6 +63,7 @@ public class GeneralController {
 
     @RequestMapping (value = "add-user")
     public boolean addUser (String username, String password) {
+        int a;
         User userToAdd = new User(username, password);
         return dbUtils.addUser(userToAdd);
     }

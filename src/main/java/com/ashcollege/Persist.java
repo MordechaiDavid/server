@@ -47,14 +47,7 @@ public class Persist {
         }
     }
 
-    public Client getClientByFirstName(String firstName){
-        return (Client) this.sessionFactory.getCurrentSession().
-                createQuery(
-                        "FROM Client WHERE firstName = :firstName").
-                setParameter("firstName", firstName)
-                .setMaxResults(1)
-                .uniqueResult();
-    }
+
 
 
 }

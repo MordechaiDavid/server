@@ -1,7 +1,6 @@
 package com.ashcollege.utils;
 
 
-import com.ashcollege.entities.Product;
 import com.ashcollege.entities.User;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,7 @@ public class DbUtils {
     private void createDbConnection(String username, String password){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ash2024", username, password);
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/final_project", username, password);
             System.out.println("Connection successful!");
             System.out.println();
         }catch (Exception e){
@@ -62,6 +61,8 @@ public class DbUtils {
         return success;
     }
 
+
+
     public List<User> getAllUsers () {
         List<User> allUsers = new ArrayList<>();
         try {
@@ -81,27 +82,6 @@ public class DbUtils {
         return allUsers;
     }
 
-    public void addProduct(Product product) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products (description, price, count) VALUES ( ? , ? , ?)");
-            preparedStatement.setString(1, product.getDescription());
-            preparedStatement.setFloat(2, product.getPrice());
-            preparedStatement.setInt(3, product.getCount());
-            preparedStatement.executeUpdate();
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*public boolean checkCredentials (String username, String password) {
-        boolean ok = false;
-        if (checkIfUsernameAvailable(username)) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE password = ? and username = ?");
-            preparedStatement.setString(1,username);
-            preparedStatement.setString(2,password);
-        }
-    }*/
 
     public User login (String username, String password) {
         User user = null;
@@ -125,27 +105,6 @@ public class DbUtils {
 
     }
 
-    public List<Product> getProductByUserSecret(String secret){
-        List<Product> products = new ArrayList<>();
-        try {
-            PreparedStatement preparedStatement = connection.
-                    prepareStatement("SELECT  p.description, p.price " +
-                            "FROM users u INNER JOIN users_products_map upm ON u.id = upm.user_id " +
-                            "INNER JOIN products p ON upm.product_id = p.id " +
-                            "WHERE u.secret = ?");
-            preparedStatement.setString(1, secret);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                String description = resultSet.getString(1);
-                float price = resultSet.getFloat(2);
-                Product p = new Product(description, price, 0);
-                products.add(p);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return products;
-    }
 
     public User getUserBySecret(String secret){
         User user = null;

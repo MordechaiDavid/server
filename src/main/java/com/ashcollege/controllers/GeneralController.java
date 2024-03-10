@@ -2,11 +2,9 @@ package com.ashcollege.controllers;
 
 import com.ashcollege.Persist;
 import com.ashcollege.entities.Client;
-import com.ashcollege.entities.Product;
 import com.ashcollege.entities.User;
 import com.ashcollege.responses.BasicResponse;
 import com.ashcollege.responses.LoginResponse;
-import com.ashcollege.responses.ProductResponse;
 import com.ashcollege.utils.DbUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.ashcollege.utils.Errors.*;
@@ -74,39 +71,7 @@ public class GeneralController {
     }
 
 
-    @RequestMapping (value = "add-product")
-    public boolean addProduct (String description, float price, int count) {
-        Product toAdd = new Product(description, price, count);
-        dbUtils.addProduct(toAdd);
-        return true;
-    }
 
-    @RequestMapping (value = "get-products")
-    public BasicResponse getProducts(String secret){
-        boolean success = false;
-        Integer errorCode = null;
-        BasicResponse basicResponse = null;
-        if (secret != null){
-            User user = dbUtils.getUserBySecret(secret);
-            if (user != null){
-                List<Product> products = dbUtils.getProductByUserSecret(secret);
-                basicResponse = new ProductResponse(true, null, products);
-            }else {
-                errorCode = ERROR_NO_SUCH_USER;
-            }
-        }else {
-            errorCode = ERROR_SECRET_WAS_NOT_SENT;
-        }
-        if (errorCode != null){
-            basicResponse = new BasicResponse(false, errorCode);
-        }
-        return basicResponse;
-    }
-
-    @RequestMapping(value = "test2")
-    public Client test2(String username){
-        return persist.getClientByFirstName(username);
-    }
 
 }
 

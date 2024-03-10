@@ -25,7 +25,7 @@ public class AppConfig {
     public DataSource dataSource() throws Exception {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass("com.mysql.jdbc.Driver");
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/ash2024?useSSL=false&serverTimezone=UTC");
+        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/final_project?useSSL=false&serverTimezone=UTC");
         dataSource.setUser(DB_USERNAME);
         dataSource.setPassword(DB_PASSWORD);
         dataSource.setMaxPoolSize(20);

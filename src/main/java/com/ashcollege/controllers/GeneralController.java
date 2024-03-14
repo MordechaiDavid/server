@@ -77,32 +77,36 @@ public class GeneralController {
             if (!password.isEmpty()) {
                 if (password.equals(password1)) {
                     if (this.isStrongPassword(password)) {
+                        if(this.isValidEmail(email)){
                         if (!persist.getUserByUserName(username)) {
                             Faker faker = new Faker();
                             User user = new User(username, password ,email,faker.lorem().word());
                             persist.save(user);
                             success = true;
-                        } else {
-                            errorCode = ERROR_SIGN_UP_USERNAME_TAKEN ;
-                        }}
+                        } else{errorCode=ERROR_SIGN_UP_USERNAME_TAKEN;}}
+                        else {
+                            errorCode = EMAIL_FORMAT_NOT_VALID ;}}
                     else{
-                         errorCode =PASSWORD_IS_WEEK ;
-                    }
-                } else {
-                     errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;
-                }
-            } else {
+                         errorCode =PASSWORD_IS_WEEK ;}}
+                else {
+                     errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
+            else {
                 errorCode = ERROR_SIGN_UP_NO_PASSWORD;
-            }
-        } else errorCode = ERROR_SIGN_UP_NO_USERNAME;
+            }}
+        else errorCode = ERROR_SIGN_UP_NO_USERNAME;
          basicResponse  = new BasicResponse(success,errorCode);
          return basicResponse;
 
     }
-    private boolean isStrongPassword (String pass){
+    private boolean isStrongPassword (String password){
         boolean isStrong = false;
-        if (pass.length() >= 6) isStrong = true;
+        if (password.length() >= 6) isStrong = true;
         return isStrong;
+    }
+    private boolean isValidEmail (String email){
+        boolean isValid = false;
+        if (email.contains("@")) isValid = true;
+        return isValid;
     }
 
 }

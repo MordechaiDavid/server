@@ -72,8 +72,9 @@ public class DbUtils {
                 int id = resultSet.getInt("id");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
                 String secret = resultSet.getString("secret");
-                User user = new User(id, username,password ,secret);
+                User user = new User(id, username,password ,email,secret);
                 allUsers.add(user);
             }
 

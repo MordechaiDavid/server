@@ -57,9 +57,9 @@ public class GeneralController {
     }
 
     @RequestMapping (value = "add-user" , method = {RequestMethod.POST})
-    public boolean addUser (String username, String password) {
+    public boolean addUser (String username, String password, String email) {
         Faker faker = new Faker();
-        User userToAdd = new User(username, password ,faker.lorem().word());
+        User userToAdd = new User(username, password ,email,faker.lorem().word());
         return dbUtils.addUser(userToAdd);
     }
 
@@ -69,7 +69,7 @@ public class GeneralController {
         return users;
     }
     @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
-    public BasicResponse createAccount(String username, String password, String password1) {
+    public BasicResponse createAccount(String username, String password, String password1 ,String email) {
         BasicResponse basicResponse = null;
         Integer errorCode = null;
         boolean success = false;
@@ -79,7 +79,7 @@ public class GeneralController {
                     if (this.isStrongPassword(password)) {
                         if (!persist.getUserByUserName(username)) {
                             Faker faker = new Faker();
-                            User user = new User(username, password ,faker.lorem().word());
+                            User user = new User(username, password ,email,faker.lorem().word());
                             persist.save(user);
                             success = true;
                         } else {

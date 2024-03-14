@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+
+<!--example-->
+    <class name="com.ashcollege.entities.User" table="users" lazy="false">
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="username" type="string" column="username"/>
+        <property name="password" type="string" column="password"/>
+        <property name="secret" type="string" column="secret"/>
+    </class>
+
+
+    <class name="com.ashcollege.entities.Team" table="teams" lazy="false">
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string" column="name"/>
+        <property name="score" type="int" column="score"/>
+        <property name="level" type="int" column="level"/>
+    </class>
+
+
+    <class name="com.ashcollege.entities.Match" table="matches" lazy="false">
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="team1" type="string" column="team1"/>
+        <property name="team2" type="string" column="team2"/>
+        <property name="date" type="date" column="date"/>
+        <property name="result" type="string" column="result"/>
+        <property name="corners" type="string" column="corners"/>
+    </class>
+
+    <class name="com.ashcollege.entities.Round" table="rounds">
+        <id name="id" column="round_id">
+            <generator class="native"/>
+        </id>
+        <list name="matchList" cascade="all">
+            <key column="round_id"/>
+            <index column="match_order"/>
+            <one-to-many class="com.ashcollege.entities.Match"/>
+        </list>
+    </class>
+
+
+
+</hibernate-mapping>

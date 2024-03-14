@@ -31,7 +31,7 @@ public class GeneralController {
 
 
 
-    @RequestMapping (value = "login", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping (value = "login", method = {RequestMethod.POST})
     public BasicResponse login (String username, String password) {
         BasicResponse basicResponse = null;
         boolean success = false;
@@ -56,7 +56,7 @@ public class GeneralController {
         return basicResponse;
     }
 
-    @RequestMapping (value = "add-user")
+    @RequestMapping (value = "add-user" , method = {RequestMethod.POST})
     public boolean addUser (String username, String password) {
         Faker faker = new Faker();
         User userToAdd = new User(username, password ,faker.lorem().word());
@@ -68,7 +68,7 @@ public class GeneralController {
         List <User> users = persist.loadList(User.class);
         return users;
     }
-    @RequestMapping(value = "create-account")
+    @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
     public BasicResponse createAccount(String username, String password, String password1) {
         BasicResponse basicResponse = null;
         Integer errorCode = null;

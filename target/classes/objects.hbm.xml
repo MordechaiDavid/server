@@ -11,6 +11,7 @@
         </id>
         <property name="username" type="string" column="username"/>
         <property name="password" type="string" column="password"/>
+        <property name="email" type="string" column="email"/>
         <property name="secret" type="string" column="secret"/>
     </class>
 
@@ -21,7 +22,8 @@
         </id>
         <property name="name" type="string" column="name"/>
         <property name="score" type="int" column="score"/>
-        <property name="level" type="int" column="level"/>
+        <property name="attackLevel" type="double" column="attack_level"/>
+        <property name="defenceLevel" type="double" column="defence_level"/>
     </class>
 
 
@@ -29,22 +31,19 @@
         <id name="id" type="int" column="id">
             <generator class="native"/>
         </id>
-        <property name="team1" type="string" column="team1"/>
-        <property name="team2" type="string" column="team2"/>
-        <property name="date" type="date" column="date"/>
-        <property name="result" type="string" column="result"/>
-        <property name="corners" type="string" column="corners"/>
+        <property name="team1" type="int" column="team1"/>
+        <property name="team2" type="int" column="team2"/>
+        <property name="date" type="java.util.Date" column="date"/>
+        <many-to-one name="roundNum" column="round_id" class="com.ashcollege.entities.Round" />
+        <property name="resultTeam1" type="int" column="resultTeam1"/>
+        <property name="resultTeam2" type="int" column="resultTeam2"/>
+        <property name="corners" type="int" column="corners"/>
     </class>
 
     <class name="com.ashcollege.entities.Round" table="rounds">
-        <id name="id" column="round_id">
+        <id name="id" column="id">
             <generator class="native"/>
         </id>
-        <list name="matchList" cascade="all">
-            <key column="round_id"/>
-            <index column="match_order"/>
-            <one-to-many class="com.ashcollege.entities.Match"/>
-        </list>
     </class>
 
 

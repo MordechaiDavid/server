@@ -1,10 +1,12 @@
 package com.ashcollege.controllers;
 
 import com.ashcollege.Persist;
+import com.ashcollege.entities.Team;
 import com.ashcollege.entities.User;
 import com.ashcollege.responses.BasicResponse;
 import com.ashcollege.responses.LoginResponse;
 import com.ashcollege.utils.DbUtils;
+import com.ashcollege.utils.Utils;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,8 +18,6 @@ import java.util.List;
 
 import static com.ashcollege.utils.Errors.*;
 
-
-
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class GeneralController {
@@ -27,8 +27,14 @@ public class GeneralController {
 
     @Autowired
     private Persist persist;
+    @Autowired
+    Utils utils;
 
 
+    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object test () {
+        return "Hello From Server";
+    }
 
 
     @RequestMapping (value = "login", method = {RequestMethod.POST})
@@ -68,6 +74,7 @@ public class GeneralController {
         List <User> users = persist.loadList(User.class);
         return users;
     }
+
     @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
     public BasicResponse createAccount(String username, String password, String password1 ,String email) {
         BasicResponse basicResponse = null;
@@ -78,26 +85,27 @@ public class GeneralController {
                 if (password.equals(password1)) {
                     if (this.isStrongPassword(password)) {
                         if(this.isValidEmail(email)){
-                        if (!persist.getUserByUserName(username)) {
-                            Faker faker = new Faker();
-                            User user = new User(username, password ,email,faker.lorem().word());
-                            persist.save(user);
-                            success = true;
-                        } else{errorCode=ERROR_SIGN_UP_USERNAME_TAKEN;}}
+                            if (!persist.getUserByUserName(username)) {
+                                Faker faker = new Faker();
+                                User user = new User(username, password ,email,faker.lorem().word());
+                                persist.save(user);
+                                success = true;
+                            } else{errorCode=ERROR_SIGN_UP_USERNAME_TAKEN;}}
                         else {
                             errorCode = EMAIL_FORMAT_NOT_VALID ;}}
                     else{
-                         errorCode =PASSWORD_IS_WEEK ;}}
+                        errorCode =PASSWORD_IS_WEEK ;}}
                 else {
-                     errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
+                    errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
             else {
                 errorCode = ERROR_SIGN_UP_NO_PASSWORD;
             }}
         else errorCode = ERROR_SIGN_UP_NO_USERNAME;
-         basicResponse  = new BasicResponse(success,errorCode);
-         return basicResponse;
+        basicResponse  = new BasicResponse(success,errorCode);
+        return basicResponse;
 
     }
+
     private boolean isStrongPassword (String password){
         boolean isStrong = false;
         if (password.length() >= 6) isStrong = true;
@@ -108,6 +116,17 @@ public class GeneralController {
         if (email.contains("@")) isValid = true;
         return isValid;
     }
+
+    @RequestMapping (value = "get-teams")
+    public List<Team> getTeams(){
+        return persist.getAllTeams();
+    }
+
+
+
+
+
+
 
 }
 

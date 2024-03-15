@@ -1,13 +1,11 @@
 package com.ashcollege.entities;
 
 import javax.persistence.*;
+import javax.xml.crypto.Data;
 import java.util.List;
 
-@Entity
 public class Round {
-    @Id
     private int id;
-    @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
     private List<Match> matchList;
 
     public int getId() {

@@ -19,7 +19,7 @@ public class Utils {
 
     @PostConstruct
     public void createTeams() {
-        String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "Liverpol FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
+        String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "liverpool FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
         List<Team> teams = persist.loadTeams(Team.class);
         if (teams.isEmpty())
             for (int i = 0; i < 8; i++) {

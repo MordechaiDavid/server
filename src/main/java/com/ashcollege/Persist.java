@@ -75,7 +75,7 @@ public class Persist {
     }
 
     public List<Match> getMatchesByRound(int roundId){
-        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum.id = :roundId")
+        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum= :roundId")
                 .setParameter("roundId", roundId)
                 .list();
     }

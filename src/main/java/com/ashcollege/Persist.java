@@ -48,6 +48,9 @@ public class Persist {
     public <T> List<T> loadTeams(Class<T> clazz) {
         return  this.sessionFactory.getCurrentSession().createQuery("FROM Team ").list();
     }
+    public <T> List<T> loadMatches(Class<T> clazz) {
+        return  this.sessionFactory.getCurrentSession().createQuery("FROM Match ").list();
+    }
     public User login (String username, String password) {
         try {
             return (User) this.sessionFactory.getCurrentSession().createQuery("FROM User WHERE username = :username AND password = :password")

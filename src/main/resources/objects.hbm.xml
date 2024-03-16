@@ -34,7 +34,8 @@
         <property name="team1" type="int" column="team1"/>
         <property name="team2" type="int" column="team2"/>
         <property name="date" type="java.util.Date" column="date"/>
-        <many-to-one name="roundNum" column="round_id" class="com.ashcollege.entities.Round" />
+        <property name="roundNum" type="int" column="round_num"/>
+<!--        <many-to-one name="roundNum" column="round_id" class="com.ashcollege.entities.Round" />-->
         <property name="resultTeam1" type="int" column="resultTeam1"/>
         <property name="resultTeam2" type="int" column="resultTeam2"/>
         <property name="corners" type="int" column="corners"/>

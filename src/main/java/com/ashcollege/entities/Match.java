@@ -12,17 +12,17 @@ public class Match {
     private int team1;
     private int team2;
     private Date date;
-    private Round roundNum;
+    private int roundNum;
     private int resultTeam1;
     private int resultTeam2;
     private int winner;
     private int corners;
 
-    public Match( int team1, int team2, Date date, Round round) {
+    public Match( int team1, int team2, Date date) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
-        this.roundNum = round;
+        this.roundNum = -1;
     }
 
     public Match() {
@@ -61,11 +61,11 @@ public class Match {
         this.date = date;
     }
 
-    public Round getRoundNum() {
+    public int getRoundNum() {
         return roundNum;
     }
 
-    public void setRoundNum(Round round) {
+    public void setRoundNum(int round) {
         this.roundNum = round;
     }
 

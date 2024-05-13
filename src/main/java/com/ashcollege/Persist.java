@@ -48,6 +48,7 @@ public class Persist {
     public <T> List<T> loadTeams(Class<T> clazz) {
         return  this.sessionFactory.getCurrentSession().createQuery("FROM Team ").list();
     }
+
     public <T> List<T> loadMatches(Class<T> clazz) {
         return  this.sessionFactory.getCurrentSession().createQuery("FROM Match ").list();
     }

@@ -24,7 +24,7 @@ public class AppConfig {
     @Bean
     public DataSource dataSource() throws Exception {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass("com.mysql.jdbc.Driver");
+        dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/final_project?useSSL=false&serverTimezone=UTC");
         dataSource.setUser(DB_USERNAME);
         dataSource.setPassword(DB_PASSWORD);

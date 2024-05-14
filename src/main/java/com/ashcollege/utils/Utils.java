@@ -33,7 +33,7 @@ public class Utils {
             List<Date> dateList = new ArrayList<>();
             Date today = new Date();
             Calendar calendar = Calendar.getInstance();
-            for (int i = 0; i < 28; i++) {
+            for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
                 calendar.set(Calendar.HOUR_OF_DAY, 20);
                 calendar.set(Calendar.MINUTE, 0);
@@ -42,15 +42,12 @@ public class Utils {
                 Date currentDate = calendar.getTime();
                 dateList.add(currentDate);
             }
-            int count = 0;
-
 
             List<Match> matches = new ArrayList<>();
             for (int i = 1; i <= 8; i++) {
                 for (int j = i + 1; j <= 8; j++) {
-                    Match match = new Match(i, j, dateList.get(count), j - 1);
+                    Match match = new Match(i, j, dateList.get(j-1), j - 1);
                     matches.add(match);
-                    count++;
                 }
             }
             for (Match match : matches) {

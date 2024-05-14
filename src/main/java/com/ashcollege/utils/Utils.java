@@ -19,25 +19,29 @@ public class Utils {
 
     @PostConstruct
     public void createTeams() {
-        String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "Liverpol FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
+        String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "liverpool FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
         List<Team> teams = persist.loadTeams(Team.class);
         if (teams.isEmpty())
             for (int i = 0; i < 8; i++) {
                 Team team = new Team(teamNames[i]);
                 persist.save(team);
             }
+        List<Match> matchList = persist.loadMatches(Match.class);
+        if(matchList.isEmpty()) {
 
-        // create 27 matches
-        List<Match> matches = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            for (int j = 1; j <= 8; j++) {
-                if (j>i) {
-                    Match match = new Match(i, j, new Date());
+            // create 27 matches
+            List<Match> matches = new ArrayList<>();
+            for (int i = 1; i <= 8; i++) {
+                for (int j = i + 1; j <= 8; j++) {
+                    Match match = new Match(i, j, new Date(), j - 1);
                     matches.add(match);
                 }
             }
+            for (int i = 0; i < matches.size(); i++) {
+                persist.save(matches.get(i));
+            }
         }
-        // create 7 rounds.
+      /* // create 7 rounds.
         // i is for rounds.
         // groups for ensure that all round is 4 matches which is 8 groups max.
         List<Integer> groups = new ArrayList<>();
@@ -60,14 +64,9 @@ public class Utils {
                 }
             }
             groups.clear();
-        }
+        }*/
 
-        for (int i = 0; i < matches.size(); i++) {
-            List<Match> matchList = persist.loadTeams(Match.class);
-            if (matchList.isEmpty()) {
-                persist.save(matches.get(i));
-            }
-        }
+
     }
 
 

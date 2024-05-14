@@ -24,7 +24,12 @@ public class Match {
         this.date = date;
         this.roundNum = -1;
     }
-
+    public Match( int team1, int team2, Date date,int roundNum) {
+        this.team1 = team1;
+        this.team2 = team2;
+        this.date = date;
+        this.roundNum = roundNum;
+    }
     public Match() {
 
     }

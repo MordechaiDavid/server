@@ -26,7 +26,7 @@ public class DbUtils {
             System.out.println("Connection successful!");
             System.out.println();
         }catch (Exception e){
-            System.out.println("Cannot create DB connection!");
+            System.err.println("Cannot create DB connection!");
         }
     }
 

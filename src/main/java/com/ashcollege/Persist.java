@@ -85,6 +85,11 @@ public class Persist {
         return this.sessionFactory.getCurrentSession().createQuery( "FROM Team ").list();
     }
 
+    //הוספתי את זה רק כדי לבדוק צד לקוח שבניתי
+    public List<Match> getAllMatches(){
+        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match order by date desc").list();
+    }
+
 
 
 }

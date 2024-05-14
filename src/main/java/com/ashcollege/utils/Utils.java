@@ -37,8 +37,8 @@ public class Utils {
                     matches.add(match);
                 }
             }
-            for (int i = 0; i < matches.size(); i++) {
-                persist.save(matches.get(i));
+            for (Match match : matches) {
+                persist.save(match);
             }
         }
 

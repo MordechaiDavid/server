@@ -76,7 +76,7 @@ public class Persist {
     }
 
     public List<Match> getMatchesByRound(int roundId){
-        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum= :roundId")
+        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum = :roundId")
                 .setParameter("roundId", roundId)
                 .list();
     }
@@ -86,8 +86,12 @@ public class Persist {
     }
 
     //הוספתי את זה רק כדי לבדוק צד לקוח שבניתי
-    public List<Match> getAllMatches(){
-        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match order by date ").list();
+    public List<Object> getAllMatches(){
+        return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, ht.name as name1, at.name as name2,m.date" +
+                "            FROM Match m " +
+                "            JOIN Team ht ON m.team1 = ht.id"  +
+                "            JOIN Team at ON m.team2= at.id "+
+                "            ORDER BY m.date").list();
     }
 
 

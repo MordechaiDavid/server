@@ -44,17 +44,14 @@ public class Utils {
             }
 
             List<Match> matches = new ArrayList<>();
-            boolean direction = true;
-            for (int i = 1; i <= 8; i++) {
-                if(i%2==0) direction=true;
-                for (int j = i + 1; j <= 8; j++) {
-                    Match match = null;
-                    if(direction) {
-                         match = new Match(i, j, dateList.get(j-1), j - 1);}
-                    else {
-                        match = new Match(j, i, dateList.get(j-1), j - 1);
-                    }
-                    direction = !direction;
+            for (int i = 1; i <= 7; i++) {
+                for (int j = 1; j <= 4; j++) {
+                    Match match= null;
+                    int teamA = (i+j-2)%7+1;
+                    int teamB = (7-(j-1)+i-1)%7+1;
+                    if(j-1==0)
+                        teamB =8;
+                    match = new Match(teamA, teamB, dateList.get(i-1), i);
                     matches.add(match);
                 }
             }

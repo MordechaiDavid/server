@@ -44,9 +44,17 @@ public class Utils {
             }
 
             List<Match> matches = new ArrayList<>();
+            boolean direction = true;
             for (int i = 1; i <= 8; i++) {
+                if(i%2==0) direction=true;
                 for (int j = i + 1; j <= 8; j++) {
-                    Match match = new Match(i, j, dateList.get(j-1), j - 1);
+                    Match match = null;
+                    if(direction) {
+                         match = new Match(i, j, dateList.get(j-1), j - 1);}
+                    else {
+                        match = new Match(j, i, dateList.get(j-1), j - 1);
+                    }
+                    direction = !direction;
                     matches.add(match);
                 }
             }

@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -81,17 +84,30 @@ public class Persist {
                 .list();
     }
 
-    public List<Team> getAllTeams(){
-        return this.sessionFactory.getCurrentSession().createQuery( "FROM Team ").list();
+    public List<Team> getAllTeams() {
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Team ").list();
     }
 
     //הוספתי את זה רק כדי לבדוק צד לקוח שבניתי
-    public List<Object> getAllMatches(){
-        return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, ht.name as name1, at.name as name2,m.date" +
+    public List<Map<String, Object>> getAllMatches(){
+        return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, t1.name, t2.name, m.date" +
                 "            FROM Match m " +
-                "            JOIN Team ht ON m.team1 = ht.id"  +
-                "            JOIN Team at ON m.team2= at.id "+
-                "            ORDER BY m.date").list();
+                "            JOIN Team t1 ON m.team1 = t1.id"  +
+                "            JOIN Team t2 ON m.team2= t2.id "+
+                "            ORDER BY m.date", Object[].class)
+                .getResultList()
+                .stream()
+                .map(result -> {
+                    Map<String, Object> map = new LinkedHashMap<>();
+                    map.put("id", result[0]);
+                    map.put("team1", result[1]);
+                    map.put("team2", result[2]);
+                    map.put("date", result[3]);
+                    return map;
+                })
+                .collect(Collectors.toList());
+
     }
 
 

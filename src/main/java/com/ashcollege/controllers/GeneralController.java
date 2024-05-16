@@ -124,7 +124,7 @@ public class GeneralController {
     }
 
     @RequestMapping (value = "get-matches")
-    public List<Match> getMatches(){
+    public List<Object> getMatches(){
         return persist.getAllMatches();
     }
 

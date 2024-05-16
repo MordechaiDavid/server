@@ -1,7 +1,6 @@
 package com.ashcollege.controllers;
 
 import com.ashcollege.Persist;
-import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Team;
 import com.ashcollege.entities.User;
 import com.ashcollege.responses.BasicResponse;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.ashcollege.utils.Errors.*;
 
@@ -124,7 +124,7 @@ public class GeneralController {
     }
 
     @RequestMapping (value = "get-matches")
-    public List<Object> getMatches(){
+    public List<Map<String, Object>> getMatches(){
         return persist.getAllMatches();
     }
 

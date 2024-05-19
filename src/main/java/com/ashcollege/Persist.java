@@ -41,10 +41,6 @@ public class Persist {
         this.sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
 
-    public void update(Object object) {
-        this.sessionFactory.getCurrentSession().update(object);
-    }
-
     public <T> T loadObject(Class<T> clazz, int oid) {
         return this.getQuerySession().get(clazz, oid);
     }
@@ -120,7 +116,16 @@ public class Persist {
                 .collect(Collectors.toList());
 
     }
+    public void update(User user){
+        this.sessionFactory.getCurrentSession()
+                .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")
+                .setParameter("username", user.getUsername())
+                .setParameter("password", user.getPassword())
+                .setParameter("email", user.getEmail())
+                .setParameter("secret", user.getSecret())
+                .executeUpdate();
 
+    }
 
 
 }

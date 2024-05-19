@@ -153,7 +153,7 @@ public class GeneralController {
         basicResponse  = new BasicResponse(success,errorCode);
         return basicResponse;
     }
-    @RequestMapping (value = "get-user")
+    @RequestMapping (value = "get-user" , method = {RequestMethod.POST})
     public User getUser (String secret){
         User user = persist.getUserBySecret(secret);
         return user;

@@ -41,6 +41,10 @@ public class Persist {
         this.sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
 
+    public void update(Object object) {
+        this.sessionFactory.getCurrentSession().update(object);
+    }
+
     public <T> T loadObject(Class<T> clazz, int oid) {
         return this.getQuerySession().get(clazz, oid);
     }
@@ -77,6 +81,14 @@ public class Persist {
             exists =true;
         return  exists;
     }
+    public User getUserBySecret (String secret) {
+        User user =(User) this.sessionFactory.getCurrentSession().createQuery(
+                        "FROM User WHERE secret = :secret ")
+                .setParameter("secret", secret)
+                .setMaxResults(1)
+                .uniqueResult();
+        return  user;
+    }
 
     public List<Match> getMatchesByRound(int roundId){
         return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum = :roundId")
@@ -89,7 +101,6 @@ public class Persist {
                 .createQuery("FROM Team ").list();
     }
 
-    //הוספתי את זה רק כדי לבדוק צד לקוח שבניתי
     public List<Map<String, Object>> getAllMatches(){
         return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, t1.name, t2.name, m.date" +
                 "            FROM Match m " +

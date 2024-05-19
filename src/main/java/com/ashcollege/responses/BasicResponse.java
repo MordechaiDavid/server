@@ -9,6 +9,7 @@ public class BasicResponse {
         this.errorCode = errorCode;
     }
 
+
     public boolean isSuccess() {
         return success;
     }

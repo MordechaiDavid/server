@@ -32,11 +32,6 @@ public class GeneralController {
     Utils utils;
 
 
-    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object test () {
-        return "Hello From Server";
-    }
-
 
     @RequestMapping (value = "login", method = {RequestMethod.POST})
     public BasicResponse login (String username, String password) {
@@ -76,9 +71,9 @@ public class GeneralController {
         return users;
     }
 
-    @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
+    @RequestMapping(value = "create-account" , method = {RequestMethod.POST,RequestMethod.GET})
     public BasicResponse createAccount(String username, String password, String password1 ,String email) {
-        BasicResponse basicResponse = null;
+        BasicResponse basicResponse ;
         Integer errorCode = null;
         boolean success = false;
         if (!username.isEmpty()) {
@@ -104,8 +99,8 @@ public class GeneralController {
         else errorCode = ERROR_SIGN_UP_NO_USERNAME;
         basicResponse  = new BasicResponse(success,errorCode);
         return basicResponse;
-
     }
+
 
     private boolean isStrongPassword (String password){
         boolean isStrong = false;
@@ -118,6 +113,7 @@ public class GeneralController {
         return isValid;
     }
 
+
     @RequestMapping (value = "get-teams")
     public List<Team> getTeams(){
         return persist.getAllTeams();
@@ -128,7 +124,40 @@ public class GeneralController {
         return persist.getAllMatches();
     }
 
-
+    @RequestMapping (value = "update-user")
+    public BasicResponse updateUser (String username, String password, String password1 ,String email,String secret) {
+        BasicResponse basicResponse;
+        Integer errorCode = null;
+        boolean success = false;
+        if (!username.isEmpty()) {
+            if (!password.isEmpty()) {
+                if (password.equals(password1)) {
+                    if (this.isStrongPassword(password)) {
+                        if(this.isValidEmail(email)){
+                                User user = persist.getUserBySecret(secret);
+                                if(user!=null) {
+                                    user = new User(username,password,email);
+                                    persist.update(user);
+                                     success = true;}
+                                else{errorCode=ERROR_NO_SUCH_USER;}}
+                        else {
+                            errorCode = EMAIL_FORMAT_NOT_VALID ;}}
+                    else{
+                        errorCode =PASSWORD_IS_WEEK ;}}
+                else {
+                    errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
+            else {
+                errorCode = ERROR_SIGN_UP_NO_PASSWORD;
+            }}
+        else errorCode = ERROR_SIGN_UP_NO_USERNAME;
+        basicResponse  = new BasicResponse(success,errorCode);
+        return basicResponse;
+    }
+    @RequestMapping (value = "get-user")
+    public User getUser (String secret){
+        User user = persist.getUserBySecret(secret);
+        return user;
+    }
 }
 
 

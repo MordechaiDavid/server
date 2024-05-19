@@ -41,6 +41,7 @@ public class Utils {
                 calendar.add(Calendar.DAY_OF_MONTH, i * 2);
                 Date currentDate = calendar.getTime();
                 dateList.add(currentDate);
+                System.out.println(currentDate);
             }
 
             List<Match> matches = new ArrayList<>();

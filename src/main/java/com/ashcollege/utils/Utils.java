@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Component
 public class Utils {
@@ -32,16 +30,17 @@ public class Utils {
         if(matchList.isEmpty()) {
             List<Date> dateList = new ArrayList<>();
             Date today = new Date();
-            Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+
             for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
                 calendar.set(Calendar.HOUR_OF_DAY, 20);
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
-                calendar.add(Calendar.DAY_OF_MONTH, i * 2);
+                calendar.set(Calendar.MILLISECOND, 0);
+                calendar.add(Calendar.DAY_OF_MONTH, (i * 2)+1);
                 Date currentDate = calendar.getTime();
                 dateList.add(currentDate);
-                System.out.println(currentDate);
             }
 
             List<Match> matches = new ArrayList<>();

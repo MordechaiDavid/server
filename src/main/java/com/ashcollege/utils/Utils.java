@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.ZonedDateTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -28,19 +29,21 @@ public class Utils {
         }
         List<Match> matchList = persist.loadMatches(Match.class);
         if(matchList.isEmpty()) {
-            List<Date> dateList = new ArrayList<>();
+            List<String> dateList = new ArrayList<>();
             Date today = new Date();
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
             for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
-                calendar.set(Calendar.HOUR_OF_DAY, 20);
+                calendar.set(Calendar.HOUR_OF_DAY, 17);
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 calendar.add(Calendar.DAY_OF_MONTH, (i * 2)+1);
                 Date currentDate = calendar.getTime();
-                dateList.add(currentDate);
+                SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
+                String formattedDate = formatter.format(currentDate);
+                dateList.add(formattedDate);
             }
 
             List<Match> matches = new ArrayList<>();

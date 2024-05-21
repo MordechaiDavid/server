@@ -102,7 +102,7 @@ public class Persist {
                 "            FROM Match m " +
                 "            JOIN Team t1 ON m.team1 = t1.id"  +
                 "            JOIN Team t2 ON m.team2= t2.id "+
-                "            ORDER BY m.date", Object[].class)
+                "            ORDER BY m.id", Object[].class)
                 .getResultList()
                 .stream()
                 .map(result -> {

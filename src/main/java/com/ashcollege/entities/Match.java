@@ -11,20 +11,20 @@ public class Match {
     private int id;
     private int team1;
     private int team2;
-    private Date date;
+    private String date;
     private int roundNum;
     private int resultTeam1;
     private int resultTeam2;
     private int winner;
     private int corners;
 
-    public Match( int team1, int team2, Date date) {
+    public Match( int team1, int team2, String date) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
         this.roundNum = -1;
     }
-    public Match( int team1, int team2, Date date,int roundNum) {
+    public Match( int team1, int team2, String date,int roundNum) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
@@ -60,11 +60,11 @@ public class Match {
         this.team2 = team2;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

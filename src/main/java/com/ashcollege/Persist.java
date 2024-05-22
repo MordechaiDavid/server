@@ -41,10 +41,6 @@ public class Persist {
         this.sessionFactory.getCurrentSession().saveOrUpdate(object);
     }
 
-    public void update(Object object) {
-        this.sessionFactory.getCurrentSession().update(object);
-    }
-
     public <T> T loadObject(Class<T> clazz, int oid) {
         return this.getQuerySession().get(clazz, oid);
     }
@@ -106,7 +102,7 @@ public class Persist {
                 "            FROM Match m " +
                 "            JOIN Team t1 ON m.team1 = t1.id"  +
                 "            JOIN Team t2 ON m.team2= t2.id "+
-                "            ORDER BY m.date", Object[].class)
+                "            ORDER BY m.id", Object[].class)
                 .getResultList()
                 .stream()
                 .map(result -> {
@@ -120,7 +116,16 @@ public class Persist {
                 .collect(Collectors.toList());
 
     }
+    public void update(User user){
+        this.sessionFactory.getCurrentSession()
+                .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")
+                .setParameter("username", user.getUsername())
+                .setParameter("password", user.getPassword())
+                .setParameter("email", user.getEmail())
+                .setParameter("secret", user.getSecret())
+                .executeUpdate();
 
+    }
 
 
 }

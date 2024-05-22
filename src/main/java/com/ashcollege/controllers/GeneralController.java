@@ -136,7 +136,7 @@ public class GeneralController {
                         if(this.isValidEmail(email)){
                                 User user = persist.getUserBySecret(secret);
                                 if(user!=null) {
-                                    user = new User(username,password,email);
+                                    user = new User(username,password,email,secret);
                                     persist.update(user);
                                      success = true;}
                                 else{errorCode=ERROR_NO_SUCH_USER;}}
@@ -150,10 +150,10 @@ public class GeneralController {
                 errorCode = ERROR_SIGN_UP_NO_PASSWORD;
             }}
         else errorCode = ERROR_SIGN_UP_NO_USERNAME;
-        basicResponse  = new BasicResponse(success,errorCode);
+        basicResponse = new BasicResponse(success,errorCode);
         return basicResponse;
     }
-    @RequestMapping (value = "get-user")
+    @RequestMapping (value = "get-user" , method = {RequestMethod.POST})
     public User getUser (String secret){
         User user = persist.getUserBySecret(secret);
         return user;

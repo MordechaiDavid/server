@@ -96,8 +96,12 @@ public class Persist {
         return this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Team ").list();
     }
+    public List<Match> getAllMatches() {
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Match ").list();
+    }
 
-    public List<Map<String, Object>> getAllMatches(){
+   /* public List<Map<String, Object>> getAllMatches(){
         return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, t1.name, t2.name, m.date" +
                 "            FROM Match m " +
                 "            JOIN Team t1 ON m.team1 = t1.id"  +
@@ -115,7 +119,7 @@ public class Persist {
                 })
                 .collect(Collectors.toList());
 
-    }
+    }*/
     public void update(User user){
         this.sessionFactory.getCurrentSession()
                 .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")

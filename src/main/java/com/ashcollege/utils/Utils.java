@@ -2,14 +2,12 @@ package com.ashcollege.utils;
 
 import com.ashcollege.Persist;
 import com.ashcollege.entities.Match;
-import com.ashcollege.entities.Round;
 import com.ashcollege.entities.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -33,6 +31,7 @@ public class Utils {
             Date today = new Date();
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
+
             for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
                 calendar.set(Calendar.HOUR_OF_DAY, 17);
@@ -50,16 +49,17 @@ public class Utils {
             for (int i = 1; i <= 7; i++) {
                 for (int j = 1; j <= 4; j++) {
                     Match match= null;
-                    int teamA = (i+j-2)%7+1;
+                    int teamA= (i+j-2)%7+1;
                     int teamB = (7-(j-1)+i-1)%7+1;
                     if(j-1==0)
                         teamB =8;
-                    match = new Match(teamA, teamB, dateList.get(i-1), i);
+
+                    match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
                     matches.add(match);
                 }
             }
             for (Match match : matches) {
-                persist.save(match);
+                 persist.save(match);
             }
         }
 

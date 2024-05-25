@@ -1,5 +1,6 @@
 package com.ashcollege.entities;
 
+import javax.persistence.Entity;
 import java.util.Random;
 
 public class Team {
@@ -22,6 +23,7 @@ public class Team {
     public Team() {
 
     }
+
 
     public int getId() {
         return id;

@@ -9,6 +9,7 @@ public class User {
     private String password;
     private String secret;
     private String email;
+    private double balance;
 
     public User(int id, String username, String password,String email, String secret) {
         this(username, password,email, secret);
@@ -20,13 +21,11 @@ public class User {
         this.password = password;
         this.email = email;
         this.secret = secret;
+        this.balance = 100;
     }
 
     public User() {
     }
-
-
-
 
     public String getUsername() {
         return username;
@@ -66,6 +65,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public boolean isSameUsername(String username) {

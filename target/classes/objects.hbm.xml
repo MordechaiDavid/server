@@ -37,6 +37,7 @@
         <many-to-one name="team2" column="team2_id" class="com.ashcollege.entities.Team"/>
         <property name="date" type="string" column="match_date"/>
         <property name="oddsTeam1" type="double" column="odds_team_1"/>
+        <property name="oddsDraw" type="double" column="odds_draw"/>
         <property name="oddsTeam2" type="double" column="odds_team_2"/>
         <property name="resultTeam1" type="int" column="resultTeam1"/>
         <property name="resultTeam2" type="int" column="resultTeam2"/>
@@ -49,7 +50,7 @@
         </id>
         <many-to-one name="match" column="match_id" class="com.ashcollege.entities.Match"/>
         <many-to-one name="gambler" column="gambler_id" class="com.ashcollege.entities.User"/>
-        <property name="sumOfBet" type="int" column="sumOfBet"/>
+        <property name="sumOfBet" type="int" column="sum_of_bet"/>
         <property name="result" type="int" column="result"/>
     </class>
 

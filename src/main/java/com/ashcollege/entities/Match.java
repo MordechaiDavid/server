@@ -14,6 +14,7 @@ public class Match {
     private int roundNum;
     private double oddsTeam1;
     private double oddsTeam2;
+    private double   oddsDraw;
     private int resultTeam1;
     private int resultTeam2;
     private int winner;
@@ -118,6 +119,14 @@ public class Match {
 
     public void setOddsTeam2(double oddsTeam2) {
         this.oddsTeam2 = oddsTeam2;
+    }
+
+    public double getOddsDraw() {
+        return oddsDraw;
+    }
+
+    public void setOddsDraw(double oddsDraw) {
+        this.oddsDraw = oddsDraw;
     }
 
     public void setWinner() {

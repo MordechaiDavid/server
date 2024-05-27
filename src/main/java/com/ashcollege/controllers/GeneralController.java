@@ -1,5 +1,6 @@
 package com.ashcollege.controllers;
 
+import com.ashcollege.FootballMatch;
 import com.ashcollege.Persist;
 import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Team;
@@ -26,12 +27,8 @@ public class GeneralController {
 
     @Autowired
     private DbUtils dbUtils;
-
     @Autowired
     private Persist persist;
-    @Autowired
-    Utils utils;
-
 
 
     @RequestMapping (value = "login", method = {RequestMethod.POST})

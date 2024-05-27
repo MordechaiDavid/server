@@ -55,6 +55,7 @@ public class Utils {
                         teamB =8;
 
                     match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
+                    calculateOdds(match);
                     matches.add(match);
                 }
             }
@@ -62,6 +63,33 @@ public class Utils {
                  persist.save(match);
             }
         }
+
+    }
+
+    public void calculateOdds(Match match){
+        double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
+        double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
+
+        powerA = Math.max(0, powerA);
+        powerB = Math.max(0, powerB);
+
+        double totalPower = powerA + powerB;
+        double winProbA;
+        double winProbB;
+
+        if (totalPower == 0) {
+            winProbA = 0.5;
+            winProbB = 0.5;
+        } else {
+            winProbA = powerA / totalPower;
+            winProbB = powerB / totalPower;
+        }
+
+        double oddsA = Math.max(1.1, Math.min(10, 1 / winProbA));
+        double oddsB = Math.max(1.1, Math.min(10, 1 / winProbB));
+
+        match.setOddsTeam1(oddsA);
+        match.setOddsTeam2(oddsB);
 
     }
 

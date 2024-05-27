@@ -12,6 +12,8 @@ public class Match {
     private Team team2;
     private String date;
     private int roundNum;
+    private double oddsTeam1;
+    private double oddsTeam2;
     private int resultTeam1;
     private int resultTeam2;
     private int winner;
@@ -102,7 +104,22 @@ public class Match {
         return winner;
     }
 
-   
+    public double getOddsTeam1() {
+        return oddsTeam1;
+    }
+
+    public void setOddsTeam1(double oddsTeam1) {
+        this.oddsTeam1 = oddsTeam1;
+    }
+
+    public double getOddsTeam2() {
+        return oddsTeam2;
+    }
+
+    public void setOddsTeam2(double oddsTeam2) {
+        this.oddsTeam2 = oddsTeam2;
+    }
+
     public void setWinner() {
         int winner=0;
         if(resultTeam1>resultTeam2)

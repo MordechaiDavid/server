@@ -14,6 +14,10 @@ public class Bet {
         this.gambler = user;
     }
 
+    public Bet() {
+
+    }
+
     public int getId() {
         return id;
     }

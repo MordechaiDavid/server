@@ -36,6 +36,8 @@
         <many-to-one name="team1" column="team1_id" class="com.ashcollege.entities.Team"/>
         <many-to-one name="team2" column="team2_id" class="com.ashcollege.entities.Team"/>
         <property name="date" type="string" column="match_date"/>
+        <property name="oddsTeam1" type="double" column="odds_team_1"/>
+        <property name="oddsTeam2" type="double" column="odds_team_2"/>
         <property name="resultTeam1" type="int" column="resultTeam1"/>
         <property name="resultTeam2" type="int" column="resultTeam2"/>
         <property name="corners" type="int" column="corners"/>

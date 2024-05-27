@@ -71,6 +71,7 @@ public class Utils {
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
 
         powerA = Math.max(0.1, powerA);
+        //df
         powerB = Math.max(0.1, powerB);
 
         double totalPower = powerA + powerB;

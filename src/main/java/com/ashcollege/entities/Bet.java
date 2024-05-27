@@ -3,15 +3,17 @@ package com.ashcollege.entities;
 public class Bet {
 
     private int id;
-
     private Match match;
-
     private User gambler;
+    private int sumOfBet;
 
-    public Bet(int id, Match match, User user) {
-        this.id = id;
+    private int result;
+
+    public Bet( Match match, User user,int sumOfBet,int result) {
         this.match = match;
         this.gambler = user;
+        this.sumOfBet = sumOfBet;
+        this.result = result;
     }
 
     public Bet() {
@@ -40,5 +42,21 @@ public class Bet {
 
     public void setGambler(User gambler) {
         this.gambler = gambler;
+    }
+
+    public int getSumOfBet() {
+        return sumOfBet;
+    }
+
+    public void setSumOfBet(int sumOfBet) {
+        this.sumOfBet = sumOfBet;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
     }
 }

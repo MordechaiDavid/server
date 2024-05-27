@@ -49,6 +49,8 @@
         </id>
         <many-to-one name="match" column="match_id" class="com.ashcollege.entities.Match"/>
         <many-to-one name="gambler" column="gambler_id" class="com.ashcollege.entities.User"/>
+        <property name="sumOfBet" type="int" column="sumOfBet"/>
+        <property name="result" type="int" column="result"/>
     </class>
 
 

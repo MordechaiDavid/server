@@ -101,33 +101,18 @@ public class Persist {
                 .createQuery("FROM Match ").list();
     }
 
-   /* public List<Map<String, Object>> getAllMatches(){
-        return this.sessionFactory.getCurrentSession().createQuery( "SELECT m.id, t1.name, t2.name, m.date" +
-                "            FROM Match m " +
-                "            JOIN Team t1 ON m.team1 = t1.id"  +
-                "            JOIN Team t2 ON m.team2= t2.id "+
-                "            ORDER BY m.id", Object[].class)
-                .getResultList()
-                .stream()
-                .map(result -> {
-                    Map<String, Object> map = new LinkedHashMap<>();
-                    map.put("id", result[0]);
-                    map.put("team1", result[1]);
-                    map.put("team2", result[2]);
-                    map.put("date", result[3]);
-                    return map;
-                })
-                .collect(Collectors.toList());
 
-    }*/
     public void update(User user){
-        this.sessionFactory.getCurrentSession()
+        try{
+                this.sessionFactory.getCurrentSession()
                 .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")
                 .setParameter("username", user.getUsername())
                 .setParameter("password", user.getPassword())
                 .setParameter("email", user.getEmail())
                 .setParameter("secret", user.getSecret())
-                .executeUpdate();
+                .executeUpdate();}
+        catch (Exception e){
+            e.printStackTrace();}
 
     }
 

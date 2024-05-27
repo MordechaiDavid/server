@@ -10,11 +10,10 @@ public class User {
     private String secret;
     private String email;
     private double balance;
-
-    public User(int id, String username, String password,String email, String secret) {
-        this(username, password,email, secret);
-        this.id = id;
-    }
+  public User(int id,String username, String password, String email, String secret){
+      this(username, password, email, secret);
+      this.id=id;
+  }
 
     public User(String username, String password, String email, String secret) {
         this.username = username;

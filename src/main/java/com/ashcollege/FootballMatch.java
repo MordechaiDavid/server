@@ -43,15 +43,15 @@ public class FootballMatch {
                             while (time < matchDurationSeconds) {
                                 List<Match> matchList2 = persist.loadMatches(Match.class);
 
-                                if (matchList.get(0).getResultTeam1() < desiredResultTeam1) {
-                                    matchList.get(0).setResultTeam1(matchList.get(0).getResultTeam1() + 1);
+                                if (matchList.get(i).getResultTeam1() < desiredResultTeam1) {
+                                    matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);
                                 }
-                                if (matchList.get(0).getResultTeam2() < desiredResultTeam2) {
-                                    matchList.get(0).setResultTeam2(matchList.get(0).getResultTeam2() + 1);
+                                if (matchList.get(i).getResultTeam2() < desiredResultTeam2) {
+                                    matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
                                 }
-                                persist.save(matchList.get(0));
-                                System.out.println(matchList.get(0).getResultTeam1());
-                                System.out.println(matchList.get(0).getResultTeam2());
+                                persist.save(matchList.get(i));
+                                System.out.println(matchList.get(i).getResultTeam1());
+                                System.out.println(matchList.get(i).getResultTeam2());
 
                                 try {
                                     Thread.sleep(timePerIterationMillis);

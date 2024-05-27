@@ -11,7 +11,7 @@ public class Team {
     private double defenceLevel;
     private boolean isInjury;
 
-    public Team( String name) {
+    public Team(String name) {
         Random random = new Random();
         this.name = name;
         this.score = 0;

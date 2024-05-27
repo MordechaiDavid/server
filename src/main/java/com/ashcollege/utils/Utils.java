@@ -70,8 +70,8 @@ public class Utils {
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
 
-        powerA = Math.max(0, powerA);
-        powerB = Math.max(0, powerB);
+        powerA = Math.max(0.1, powerA);
+        powerB = Math.max(0.1, powerB);
 
         double totalPower = powerA + powerB;
         double winProbA;
@@ -85,8 +85,8 @@ public class Utils {
             winProbB = powerB / totalPower;
         }
 
-        double oddsA = Math.max(1.1, Math.min(10, 1 / winProbA));
-        double oddsB = Math.max(1.1, Math.min(10, 1 / winProbB));
+        double oddsA = Math.max(1.1, Math.min(6, 1 / winProbA));
+        double oddsB = Math.max(1.1, Math.min(6, 1 / winProbB));
 
         match.setOddsTeam1(oddsA);
         match.setOddsTeam2(oddsB);

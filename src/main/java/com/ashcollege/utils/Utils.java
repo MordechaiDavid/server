@@ -94,7 +94,7 @@ public class Utils {
 
         double oddsA = Math.max(1.1, Math.min(5, 1 / winProbA));
         double oddsB = Math.max(1.1, Math.min(5, 1 / winProbB));
-        double oddsDraw = Math.max(1.1, Math.min(15, 1 / drawProb));
+        double oddsDraw = Math.max(1.1, Math.min(5, 1 / drawProb));
 
         if (oddsA >= 3 && oddsB >= 3 && oddsDraw >= 3) {
             oddsA = Math.min(2.9, oddsA);

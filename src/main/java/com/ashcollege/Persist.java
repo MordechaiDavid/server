@@ -46,7 +46,7 @@ public class Persist {
     }
 
     public <T> List<T> loadList(Class<T> clazz) {
-            return  this.sessionFactory.getCurrentSession().createQuery("FROM User ").list();
+        return  this.sessionFactory.getCurrentSession().createQuery("FROM User ").list();
     }
     public <T> List<T> loadTeams(Class<T> clazz) {
         return  this.sessionFactory.getCurrentSession().createQuery("FROM Team ").list();
@@ -98,19 +98,19 @@ public class Persist {
     }
     public List<Match> getAllMatches() {
         return this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Match ").list();
+                .createQuery("FROM Match").list();
     }
 
 
     public void update(User user){
         try{
-                this.sessionFactory.getCurrentSession()
-                .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")
-                .setParameter("username", user.getUsername())
-                .setParameter("password", user.getPassword())
-                .setParameter("email", user.getEmail())
-                .setParameter("secret", user.getSecret())
-                .executeUpdate();}
+            this.sessionFactory.getCurrentSession()
+                    .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")
+                    .setParameter("username", user.getUsername())
+                    .setParameter("password", user.getPassword())
+                    .setParameter("email", user.getEmail())
+                    .setParameter("secret", user.getSecret())
+                    .executeUpdate();}
         catch (Exception e){
             e.printStackTrace();}
 

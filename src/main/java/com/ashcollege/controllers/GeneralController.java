@@ -29,6 +29,8 @@ public class GeneralController {
     private DbUtils dbUtils;
     @Autowired
     private Persist persist;
+    @Autowired
+    private Utils utils;
 
 
     @RequestMapping (value = "login", method = {RequestMethod.POST})

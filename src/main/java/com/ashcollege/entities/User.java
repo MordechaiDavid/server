@@ -1,26 +1,30 @@
 package com.ashcollege.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 
+@Entity
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String username;
     private String password;
     private String secret;
     private String email;
-    private double balance;
-  public User(int id,String username, String password, String email, String secret){
-      this(username, password, email, secret);
-      this.id=id;
-  }
+    private Double balance; // שינוי לסוג Double
+
+    public User(int id, String username, String password, String email, String secret) {
+        this(username, password, email, secret);
+        this.id = id;
+    }
 
     public User(String username, String password, String email, String secret) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.secret = secret;
-        this.balance = 100;
+        this.balance = 100.0;
     }
 
     public User() {
@@ -66,12 +70,16 @@ public class User {
         this.email = email;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setBalance(Double balance) {
+        if (balance == null) {
+            this.balance = 100.0; // ערך ברירת מחדל
+        } else {
+            this.balance = balance;
+        }
     }
 
     public boolean isSameUsername(String username) {
@@ -80,8 +88,5 @@ public class User {
 
     public boolean isSameCreds(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
-
     }
-
 }
-

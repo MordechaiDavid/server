@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-@Component
+    //@Component
 public class FootballMatch {
-    @Autowired
+    //@Autowired
     Persist persist;
 
    @PostConstruct

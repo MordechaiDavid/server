@@ -9,24 +9,22 @@ public class User {
     private String password;
     private String secret;
     private String email;
-
-    public User(int id, String username, String password,String email, String secret) {
-        this(username, password,email, secret);
-        this.id = id;
-    }
+    private double balance;
+  public User(int id,String username, String password, String email, String secret){
+      this(username, password, email, secret);
+      this.id=id;
+  }
 
     public User(String username, String password, String email, String secret) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.secret = secret;
+        this.balance = 100;
     }
 
     public User() {
     }
-
-
-
 
     public String getUsername() {
         return username;
@@ -66,6 +64,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public boolean isSameUsername(String username) {

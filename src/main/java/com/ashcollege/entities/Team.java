@@ -1,5 +1,6 @@
 package com.ashcollege.entities;
 
+import javax.persistence.Entity;
 import java.util.Random;
 
 public class Team {
@@ -10,7 +11,7 @@ public class Team {
     private double defenceLevel;
     private boolean isInjury;
 
-    public Team( String name) {
+    public Team(String name) {
         Random random = new Random();
         this.name = name;
         this.score = 0;
@@ -22,6 +23,7 @@ public class Team {
     public Team() {
 
     }
+
 
     public int getId() {
         return id;

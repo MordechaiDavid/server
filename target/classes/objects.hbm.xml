@@ -13,6 +13,7 @@
         <property name="password" type="string" column="password"/>
         <property name="email" type="string" column="email"/>
         <property name="secret" type="string" column="secret"/>
+        <property name="balance" type="double" column="balance"/>
     </class>
 
 
@@ -31,21 +32,29 @@
         <id name="id" type="int" column="id">
             <generator class="native"/>
         </id>
-        <property name="team1" type="int" column="team1"/>
-        <property name="team2" type="int" column="team2"/>
-        <property name="date" type="string" column="match_date"/>
         <property name="roundNum" type="int" column="round_num"/>
-<!--        <many-to-one name="roundNum" column="round_id" class="com.ashcollege.entities.Round" />-->
+        <many-to-one name="team1" column="team1_id" class="com.ashcollege.entities.Team"/>
+        <many-to-one name="team2" column="team2_id" class="com.ashcollege.entities.Team"/>
+        <property name="date" type="string" column="match_date"/>
+        <property name="oddsTeam1" type="double" column="odds_team_1"/>
+        <property name="oddsDraw" type="double" column="odds_draw"/>
+        <property name="oddsTeam2" type="double" column="odds_team_2"/>
         <property name="resultTeam1" type="int" column="resultTeam1"/>
         <property name="resultTeam2" type="int" column="resultTeam2"/>
         <property name="corners" type="int" column="corners"/>
     </class>
 
-    <class name="com.ashcollege.entities.Round" table="rounds">
-        <id name="id" column="id">
+    <class name="com.ashcollege.entities.Bet" table="gambling" lazy="false">
+        <id name="id" type="int" column="id">
             <generator class="native"/>
         </id>
+        <many-to-one name="match" column="match_id" class="com.ashcollege.entities.Match"/>
+        <many-to-one name="gambler" column="gambler_id" class="com.ashcollege.entities.User"/>
+        <property name="sumOfBet" type="int" column="sum_of_bet"/>
+        <property name="result" type="int" column="result"/>
     </class>
+
+
 
 
 

@@ -5,26 +5,28 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-
 public class Match {
 
     private int id;
-    private int team1;
-    private int team2;
+    private Team team1;
+    private Team team2;
     private String date;
     private int roundNum;
+    private double oddsTeam1;
+    private double oddsTeam2;
+    private double   oddsDraw;
     private int resultTeam1;
     private int resultTeam2;
     private int winner;
     private int corners;
 
-    public Match( int team1, int team2, String date) {
+    public Match( Team team1, Team team2, String date) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
         this.roundNum = -1;
     }
-    public Match( int team1, int team2, String date,int roundNum) {
+    public Match(int roundNum, Team team1,Team team2, String date) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
@@ -44,19 +46,19 @@ public class Match {
         this.id = id;
     }
 
-    public int getTeam1() {
+    public Team getTeam1() {
         return team1;
     }
 
-    public void setTeam1(int team1) {
+    public void setTeam1(Team team1) {
         this.team1 = team1;
     }
 
-    public int getTeam2() {
+    public Team getTeam2() {
         return team2;
     }
 
-    public void setTeam2(int team2) {
+    public void setTeam2(Team team2) {
         this.team2 = team2;
     }
 
@@ -103,6 +105,30 @@ public class Match {
         return winner;
     }
 
+    public double getOddsTeam1() {
+        return oddsTeam1;
+    }
+
+    public void setOddsTeam1(double oddsTeam1) {
+        this.oddsTeam1 = oddsTeam1;
+    }
+
+    public double getOddsTeam2() {
+        return oddsTeam2;
+    }
+
+    public void setOddsTeam2(double oddsTeam2) {
+        this.oddsTeam2 = oddsTeam2;
+    }
+
+    public double getOddsDraw() {
+        return oddsDraw;
+    }
+
+    public void setOddsDraw(double oddsDraw) {
+        this.oddsDraw = oddsDraw;
+    }
+
     public void setWinner() {
         int winner=0;
         if(resultTeam1>resultTeam2)
@@ -111,4 +137,6 @@ public class Match {
             winner =2;
         this.winner = winner;
     }
+
+
 }

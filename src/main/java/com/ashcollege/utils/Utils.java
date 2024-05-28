@@ -67,9 +67,6 @@ public class Utils {
 
     }
 
-
-
-
     public void calculateOdds(Match match) {
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();

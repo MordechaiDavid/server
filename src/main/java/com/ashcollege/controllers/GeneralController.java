@@ -124,7 +124,7 @@ public class GeneralController {
         return persist.getAllMatches();
     }
 
-    @RequestMapping (value = "update-user")
+    @RequestMapping (value = "update-user", method = {RequestMethod.POST})
     public BasicResponse updateUser (String username, String password, String password1 ,String email,String secret) {
         BasicResponse basicResponse;
         Integer errorCode = null;

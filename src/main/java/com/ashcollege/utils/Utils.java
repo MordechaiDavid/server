@@ -67,7 +67,8 @@ public class Utils {
 
     }
 
-    public void calculateOdds(Match match) {
+
+  public void calculateOdds(Match match) {
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
 
@@ -75,9 +76,7 @@ public class Utils {
         powerB = Math.max(0, powerB);
 
         double totalPower = powerA + powerB;
-        double winProbA;
-        double winProbB;
-        double drawProb;
+        double winProbA,winProbB,drawProb;
 
         if (totalPower == 0) {
             winProbA = 0.3333;
@@ -86,12 +85,12 @@ public class Utils {
         } else {
             winProbA = powerA / totalPower;
             winProbB = powerB / totalPower;
-            drawProb = 1 - winProbA - winProbB;
+            drawProb = 1 - totalPower;
         }
 
         double oddsA = Math.max(1.1, Math.min(5, 1 / winProbA));
         double oddsB = Math.max(1.1, Math.min(5, 1 / winProbB));
-        double oddsDraw = Math.max(1.1, Math.min(5, 1 / drawProb));
+        double oddsDraw = Math.max(1.1, Math.min(5.0, 1 / drawProb));
 
         if (oddsA >= 3 && oddsB >= 3 && oddsDraw >= 3) {
             oddsA = Math.min(2.9, oddsA);
@@ -109,6 +108,8 @@ public class Utils {
         match.setOddsTeam2(oddsB);
         match.setOddsDraw(oddsDraw);
     }
+
+
 
 
 }

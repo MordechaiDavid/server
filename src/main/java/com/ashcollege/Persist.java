@@ -12,9 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -87,7 +86,7 @@ public class Persist {
     }
 
     public List<Match> getMatchesByRound(int roundId){
-        return this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum = :roundId")
+        return  this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum = :roundId")
                 .setParameter("roundId", roundId)
                 .list();
     }
@@ -97,8 +96,22 @@ public class Persist {
                 .createQuery("FROM Team ").list();
     }
     public List<Match> getAllMatches() {
-        return this.sessionFactory.getCurrentSession()
+        List<Match> allMatches = this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Match").list();
+        List <Match> futureMatches = new ArrayList<>();
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
+        for(Match match : allMatches){
+            try{
+            Date currentDate =simpleDateFormat.parse (match.getDate());
+            if(currentDate.after(today)){
+                futureMatches.add(match);}
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return futureMatches;
     }
 
 

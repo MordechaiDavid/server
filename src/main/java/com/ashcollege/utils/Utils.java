@@ -45,19 +45,18 @@ public class Utils {
                 String formattedDate = formatter.format(currentDate);
                 dateList.add(formattedDate);
             }
-
+            teams = persist.loadTeams(Team.class);
             List<Match> matches = new ArrayList<>();
             for (int i = 1; i <= 7; i++) {
                 for (int j = 1; j <= 4; j++) {
-                    Match match= null;
                     int teamA= (i+j-2)%7+1;
                     int teamB = (7-(j-1)+i-1)%7+1;
                     if(j-1==0)
                         teamB =8;
-
-                    match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
+                    if(!teams.isEmpty()){
+                   Match match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
                     calculateOdds(match);
-                    matches.add(match);
+                    matches.add(match);}
                 }
             }
             for (Match match : matches) {
@@ -71,32 +70,35 @@ public class Utils {
   public void calculateOdds(Match match) {
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
-
-        powerA = Math.max(0, powerA);
-        powerB = Math.max(0, powerB);
-
+        double injuredInA = !match.getTeam1().getIsInjury() ? 0: 0.15;
+        double injuredInB = !match.getTeam2().getIsInjury() ? 0: 0.15;
+        if(powerA < 0 && powerB < 0){
+            powerA = 1 + powerA;
+            powerB = 1 + powerB;
+        }
+        else{
+            powerA = Math.max(0, powerA);
+            powerB = Math.max(0, powerB);
+        }
         double totalPower = powerA + powerB;
         double winProbA,winProbB,drawProb;
 
         if (totalPower == 0) {
-            winProbA = 0.3333;
-            winProbB = 0.3333;
-            drawProb = 0.3333;
+            winProbA = 0.25;
+            winProbB = 0.25;
+            drawProb = 0.5;
         } else {
             winProbA = powerA / totalPower;
             winProbB = powerB / totalPower;
             drawProb = 1 - totalPower;
         }
+        winProbA = 1 / winProbA - 0.3 + injuredInA;
+        winProbB =  1 / winProbB + injuredInB;
 
-        double oddsA = Math.max(1.1, Math.min(5, 1 / winProbA));
-        double oddsB = Math.max(1.1, Math.min(5, 1 / winProbB));
+        double oddsA = Math.max(1.1, Math.min(5,  winProbA));
+        double oddsB = Math.max(1.1, Math.min(5,  winProbB));
         double oddsDraw = Math.max(1.1, Math.min(5.0, 1 / drawProb));
 
-        if (oddsA >= 3 && oddsB >= 3 && oddsDraw >= 3) {
-            oddsA = Math.min(2.9, oddsA);
-            oddsB = Math.min(2.9, oddsB);
-            oddsDraw = Math.min(2.9, oddsDraw);
-        }
 
 
         DecimalFormat df = new DecimalFormat("#.##");

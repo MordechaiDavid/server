@@ -26,6 +26,7 @@ public class Utils {
                 persist.save(team);
             }
         }
+        teams = persist.loadTeams(Team.class);
         List<Match> matchList = persist.loadMatches(Match.class);
         if(matchList.isEmpty()) {
             List<String> dateList = new ArrayList<>();
@@ -45,7 +46,7 @@ public class Utils {
                 String formattedDate = formatter.format(currentDate);
                 dateList.add(formattedDate);
             }
-            teams = persist.loadTeams(Team.class);
+
             List<Match> matches = new ArrayList<>();
             for (int i = 1; i <= 7; i++) {
                 for (int j = 1; j <= 4; j++) {

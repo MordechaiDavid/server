@@ -54,11 +54,10 @@ public class Utils {
                     int teamB = (7-(j-1)+i-1)%7+1;
                     if(j-1==0)
                         teamB =8;
-                    if(!teams.isEmpty()){
                    Match match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
                     calculateOdds(match);
                     matches.add(match);}
-                }
+
             }
             for (Match match : matches) {
                  persist.save(match);

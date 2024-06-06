@@ -23,10 +23,10 @@ public class Utils {
             String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "liverpool FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
             for (int i = 0; i < 8; i++) {
                 Team team = new Team(teamNames[i]);
+                teams.add(team);
                 persist.save(team);
             }
         }
-        teams = persist.loadTeams(Team.class);
         List<Match> matchList = persist.loadMatches(Match.class);
         if(matchList.isEmpty()) {
             List<String> dateList = new ArrayList<>();
@@ -56,11 +56,10 @@ public class Utils {
                         teamB =8;
                    Match match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateList.get(i-1));
                     calculateOdds(match);
-                    matches.add(match);}
+                    matches.add(match);
+                    persist.save(match);
+                }
 
-            }
-            for (Match match : matches) {
-                 persist.save(match);
             }
         }
 

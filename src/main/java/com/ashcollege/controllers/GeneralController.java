@@ -71,7 +71,7 @@ public class GeneralController {
         return users;
     }
 
-    @RequestMapping(value = "create-account" , method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
     public BasicResponse createAccount(String username, String password, String password1 ,String email) {
         BasicResponse basicResponse ;
         Integer errorCode = null;
@@ -113,7 +113,6 @@ public class GeneralController {
         return isValid;
     }
 
-
     @RequestMapping (value = "get-teams")
     public List<Team> getTeams(){
         return persist.getAllTeams();
@@ -122,6 +121,11 @@ public class GeneralController {
     @RequestMapping (value = "get-matches")
     public List<Match> getMatches(){
         return persist.getAllMatches();
+    }
+
+    @RequestMapping (value = "get-old-matches")
+    public List<Match> getOldMatches(){
+        return persist.getOldMatches();
     }
 
     @RequestMapping (value = "update-user", method = {RequestMethod.POST})

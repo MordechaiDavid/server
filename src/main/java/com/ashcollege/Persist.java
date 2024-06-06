@@ -113,6 +113,25 @@ public class Persist {
         }
         return futureMatches;
     }
+    public List<Match> getOldMatches() {
+        List<Match> allMatches = this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Match").list();
+        List <Match> futureMatches = new ArrayList<>();
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
+        for(Match match : allMatches){
+            try{
+                Date currentDate =simpleDateFormat.parse (match.getDate());
+                if(currentDate.before(today)){
+                    futureMatches.add(match);}
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return futureMatches;
+    }
+
 
 
     public void update(User user){

@@ -13,7 +13,7 @@ public class Bet {
         this.match = match;
         this.gambler = user;
         this.sumOfBet = sumOfBet;
-        this.result = result;
+        this.setResult(result);
     }
 
     public Bet() {
@@ -57,6 +57,7 @@ public class Bet {
     }
 
     public void setResult(int result) {
-        this.result = result;
+        if(result == 0 || result == 1 || result == 2)
+           this.result = result;
     }
 }

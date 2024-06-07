@@ -47,10 +47,10 @@ public class GeneralController {
                     errorCode = ERROR_LOGIN_WRONG_CREDS;
                 }
             } else {
-                errorCode = ERROR_SIGN_UP_NO_PASSWORD;
+                errorCode = ERROR_NO_PASSWORD;
             }
         } else {
-            errorCode = ERROR_SIGN_UP_NO_USERNAME;
+            errorCode = ERROR_NO_USERNAME;
         }
         if (errorCode != null) {
             basicResponse = new BasicResponse(success, errorCode);
@@ -86,17 +86,17 @@ public class GeneralController {
                                 User user = new User(username, password ,email,faker.lorem().word());
                                 persist.save(user);
                                 success = true;
-                            } else{errorCode=ERROR_SIGN_UP_USERNAME_TAKEN;}}
+                            } else{errorCode=ERROR_USERNAME_TAKEN;}}
                         else {
                             errorCode = EMAIL_FORMAT_NOT_VALID ;}}
                     else{
                         errorCode =PASSWORD_IS_WEEK ;}}
                 else {
-                    errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
+                    errorCode = ERROR_PASSWORDS_DONT_MATCH;}}
             else {
-                errorCode = ERROR_SIGN_UP_NO_PASSWORD;
+                errorCode = ERROR_NO_PASSWORD;
             }}
-        else errorCode = ERROR_SIGN_UP_NO_USERNAME;
+        else errorCode = ERROR_NO_USERNAME;
         basicResponse  = new BasicResponse(success,errorCode);
         return basicResponse;
     }
@@ -128,7 +128,7 @@ public class GeneralController {
         return persist.getOldMatches();
     }
 
-    @RequestMapping (value = "update-user", method = {RequestMethod.POST})
+    @RequestMapping (value = "update-user", method = {RequestMethod.GET,RequestMethod.POST})
     public BasicResponse updateUser (String username, String password, String password1 ,String email,String secret) {
         BasicResponse basicResponse;
         Integer errorCode = null;
@@ -140,20 +140,24 @@ public class GeneralController {
                         if(this.isValidEmail(email)){
                                 User user = persist.getUserBySecret(secret);
                                 if(user!=null) {
-                                    user = new User(username,password,email,secret);
-                                    persist.update(user);
-                                     success = true;}
-                                else{errorCode=ERROR_NO_SUCH_USER;}}
+                                    if(!persist.getUserByUserName(username)){
+                                        user = new User(username,password,email,secret);
+                                        persist.update(user);
+                                        success = true;}
+                                    else{
+                                        errorCode = ERROR_USERNAME_TAKEN;}}
+                                else{
+                                    errorCode=ERROR_NO_SUCH_USER;}}
                         else {
                             errorCode = EMAIL_FORMAT_NOT_VALID ;}}
                     else{
                         errorCode =PASSWORD_IS_WEEK ;}}
                 else {
-                    errorCode = ERROR_SIGN_UP_PASSWORDS_DONT_MATCH;}}
+                    errorCode = ERROR_PASSWORDS_DONT_MATCH;}}
             else {
-                errorCode = ERROR_SIGN_UP_NO_PASSWORD;
+                errorCode = ERROR_NO_PASSWORD;
             }}
-        else errorCode = ERROR_SIGN_UP_NO_USERNAME;
+        else errorCode = ERROR_NO_USERNAME;
         basicResponse = new BasicResponse(success,errorCode);
         return basicResponse;
     }

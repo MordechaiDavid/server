@@ -140,7 +140,7 @@ public class GeneralController {
                         if(this.isValidEmail(email)){
                                 User user = persist.getUserBySecret(secret);
                                 if(user!=null) {
-                                    if(!persist.getUserByUserName(username)){
+                                    if(!persist.checkUserByUserName(username,secret)){
                                         user = new User(username,password,email,secret);
                                         persist.update(user);
                                         success = true;}

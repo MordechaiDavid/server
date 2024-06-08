@@ -76,6 +76,19 @@ public class Persist {
             exists =true;
         return  exists;
     }
+    public boolean checkUserByUserName (String username,String secret) {
+        boolean exists =false;
+        User user = (User)this.sessionFactory.getCurrentSession().createQuery(
+                        "FROM User WHERE username = :username AND secret != :secret")
+                .setParameter("username", username)
+                .setParameter("secret", secret)
+                .setMaxResults(1)
+                .uniqueResult();
+        if (user != null )
+            exists =true;
+        return  exists;
+    }
+
     public User getUserBySecret (String secret) {
         User user =(User) this.sessionFactory.getCurrentSession().createQuery(
                         "FROM User WHERE secret = :secret ")

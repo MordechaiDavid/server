@@ -18,7 +18,7 @@ public class Utils {
 
     @PostConstruct
     public void createTeams() {
-        List<Team> teams = persist.loadTeams(Team.class);
+        List<Team> teams = persist.loadList(Team.class);
         if (teams.isEmpty()) {
             String[] teamNames = {"Barcelona FC", "Real Madrid FC", "Milan AC", "PSG FC", "liverpool FC", "Arsenal FC", "Manchester United FC", "Macabi TA FC"};
             for (int i = 0; i < 8; i++) {
@@ -27,7 +27,7 @@ public class Utils {
                 persist.save(team);
             }
         }
-        List<Match> matchList = persist.loadMatches(Match.class);
+        List<Match> matchList = persist.loadList(Match.class);
         if(matchList.isEmpty()) {
             List<String> dateList = new ArrayList<>();
             Date today = new Date();
@@ -64,7 +64,6 @@ public class Utils {
         }
 
     }
-
 
   public void calculateOdds(Match match) {
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();

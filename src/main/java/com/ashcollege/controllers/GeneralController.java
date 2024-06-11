@@ -2,6 +2,7 @@ package com.ashcollege.controllers;
 
 import com.ashcollege.FootballMatch;
 import com.ashcollege.Persist;
+import com.ashcollege.entities.Bet;
 import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Team;
 import com.ashcollege.entities.User;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.crypto.Data;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +76,11 @@ public class GeneralController {
         return users;
     }
 
+    @RequestMapping (value = "get-user" , method = {RequestMethod.POST})
+    public User getUser (String secret){
+        User user = persist.getUserBySecret(secret);
+        return user;
+    }
     @RequestMapping(value = "create-account" , method = {RequestMethod.POST})
     public BasicResponse createAccount(String username, String password, String password1 ,String email) {
         BasicResponse basicResponse ;
@@ -99,33 +109,6 @@ public class GeneralController {
         else errorCode = ERROR_NO_USERNAME;
         basicResponse  = new BasicResponse(success,errorCode);
         return basicResponse;
-    }
-
-
-    private boolean isStrongPassword (String password){
-        boolean isStrong = false;
-        if (password.length() >= 6) isStrong = true;
-        return isStrong;
-    }
-    private boolean isValidEmail (String email){
-        boolean isValid = false;
-        if (email.contains("@")) isValid = true;
-        return isValid;
-    }
-
-    @RequestMapping (value = "get-teams")
-    public List<Team> getTeams(){
-        return persist.getAllTeams();
-    }
-
-    @RequestMapping (value = "get-matches")
-    public List<Match> getMatches(){
-        return persist.getAllMatches();
-    }
-
-    @RequestMapping (value = "get-old-matches")
-    public List<Match> getOldMatches(){
-        return persist.getOldMatches();
     }
 
     @RequestMapping (value = "update-user", method = {RequestMethod.GET,RequestMethod.POST})
@@ -161,10 +144,66 @@ public class GeneralController {
         basicResponse = new BasicResponse(success,errorCode);
         return basicResponse;
     }
-    @RequestMapping (value = "get-user" , method = {RequestMethod.POST})
-    public User getUser (String secret){
+
+    @RequestMapping (value = "get-teams")
+    public List<Team> getTeams(){
+        return persist.getAllTeams();
+    }
+
+    @RequestMapping (value = "get-matches")
+    public List<Match> getMatches(){
+        return persist.getAvailableMatches();
+    }
+
+    @RequestMapping (value = "get-old-matches")
+    public List<Match> getOldMatches(){
+        return persist.getOldMatches();
+    }
+
+    @RequestMapping(value = "add-bet")
+    public BasicResponse addBet(int matchId, String secret, int sumOfBet, int result) throws ParseException {
+        BasicResponse basicResponse;
+        Integer errorCode = null;
+        boolean success = false;
         User user = persist.getUserBySecret(secret);
-        return user;
+        if(user != null){
+            Match match = persist.getMatchesById(matchId);
+            if(match !=null && isAvailableMatch(match)){
+                if(isValidResult(result)){
+                    if(isValidSum(sumOfBet, user.getBalance())){
+                        success = true;
+                        Bet bet = new Bet(match,user, sumOfBet ,result);
+                        persist.save(bet);
+                        persist.updateBalance((double)sumOfBet,secret);
+                    }else{errorCode = ERROR_NO_VALID_SUM;}
+                }else{errorCode = ERROR_NO_VALID_RESULT;}
+            }else{errorCode = ERROR_NO_SUCH_MATCH;}
+        }else {errorCode = ERROR_NO_SUCH_USER;}
+
+        basicResponse = new BasicResponse(success,errorCode);
+        return basicResponse;
+    }
+
+    private boolean isStrongPassword (String password){
+        return password.length() >= 6;
+    }
+    private boolean isValidEmail (String email){
+        return email.contains("@");
+    }
+
+    private boolean isValidResult (int result){
+        return result >= 0 && result <=2;
+    }
+
+    private boolean isValidSum(int sum, double balance){
+        return sum <= balance && sum % 5 == 0;
+    }
+
+    private boolean isAvailableMatch (Match match) throws ParseException {
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
+        Date currentDate =simpleDateFormat.parse (match.getDate());
+        return currentDate.after(today);
     }
 }
 

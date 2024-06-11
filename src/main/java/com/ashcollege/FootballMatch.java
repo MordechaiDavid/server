@@ -29,7 +29,7 @@ public class FootballMatch {
                     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
                     String currentTime = formatter.format(currentDate);
                     System.out.println(currentTime);
-                    List<Match> matchList = persist.loadMatches(Match.class);
+                    List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             int matchDurationSeconds = 30;
@@ -41,7 +41,7 @@ public class FootballMatch {
 
                             int time = 0;
                             while (time < matchDurationSeconds) {
-                                List<Match> matchList2 = persist.loadMatches(Match.class);
+                                List<Match> matchList2 = persist.loadList(Match.class);
 
                                 if (matchList.get(i).getResultTeam1() < desiredResultTeam1) {
                                     matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);

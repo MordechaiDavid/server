@@ -10,5 +10,9 @@ public class Errors {
     public static final int ERROR_LOGIN_WRONG_CREDS = 7;
     public static final int ERROR_SECRET_WAS_NOT_SENT = 8;
     public static final int ERROR_NO_SUCH_USER = 9;
+    public static final int ERROR_NO_SUCH_MATCH = 10;
+    public static final int ERROR_NO_VALID_RESULT= 11;
+    public static final int ERROR_NO_VALID_SUM = 12;
+
 
 }

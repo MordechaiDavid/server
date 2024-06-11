@@ -45,14 +45,8 @@ public class Persist {
     }
 
     public <T> List<T> loadList(Class<T> clazz) {
-        return  this.sessionFactory.getCurrentSession().createQuery("FROM User ").list();
-    }
-    public <T> List<T> loadTeams(Class<T> clazz) {
-        return  this.sessionFactory.getCurrentSession().createQuery("FROM Team ").list();
-    }
-
-    public <T> List<T> loadMatches(Class<T> clazz) {
-        return  this.sessionFactory.getCurrentSession().createQuery("FROM Match ").list();
+        String entityName = clazz.getSimpleName();
+        return this.sessionFactory.getCurrentSession().createQuery("FROM " + entityName, clazz).list();
     }
     public User login (String username, String password) {
         try {
@@ -98,17 +92,19 @@ public class Persist {
         return  user;
     }
 
-    public List<Match> getMatchesByRound(int roundId){
-        return  this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE roundNum = :roundId")
-                .setParameter("roundId", roundId)
-                .list();
+    public Match getMatchesById(int id){
+        Match match = (Match) this.sessionFactory.getCurrentSession().createQuery( "FROM Match WHERE id = :id")
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .uniqueResult();
+        return  match;
     }
 
     public List<Team> getAllTeams() {
         return this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Team ").list();
     }
-    public List<Match> getAllMatches() {
+    public List<Match> getAvailableMatches() {
         List<Match> allMatches = this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Match").list();
         List <Match> futureMatches = new ArrayList<>();
@@ -159,6 +155,18 @@ public class Persist {
         catch (Exception e){
             e.printStackTrace();}
 
+    }
+
+    public void updateBalance(double sumOfBet, String secret){
+        try {
+            this.sessionFactory.getCurrentSession()
+                    .createQuery("UPDATE User SET balance = balance - :sumOfBet WHERE secret = :secret")
+                    .setParameter("sumOfBet", sumOfBet)
+                    .setParameter("secret", secret)
+                    .executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

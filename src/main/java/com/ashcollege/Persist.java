@@ -160,7 +160,7 @@ public class Persist {
     public void updateBalance(double sumOfBet, String secret){
         try {
             this.sessionFactory.getCurrentSession()
-                    .createQuery("UPDATE User SET balance = balance - :sumOfBet WHERE secret = :secret")
+                    .createQuery("UPDATE User SET balance = balance + :sumOfBet WHERE secret = :secret")
                     .setParameter("sumOfBet", sumOfBet)
                     .setParameter("secret", secret)
                     .executeUpdate();

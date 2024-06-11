@@ -160,7 +160,7 @@ public class GeneralController {
         return persist.getOldMatches();
     }
 
-    @RequestMapping(value = "add-bet" , method = {RequestMethod.POST})
+    @RequestMapping(value = "add-bet" , method = {RequestMethod.GET})
     public BasicResponse addBet(int matchId, String secret, int sumOfBet, int result) throws ParseException {
         BasicResponse basicResponse;
         Integer errorCode = null;
@@ -174,13 +174,28 @@ public class GeneralController {
                         success = true;
                         Bet bet = new Bet(match,user, sumOfBet ,result);
                         persist.save(bet);
-                        persist.updateBalance((double)sumOfBet,secret);
+                        persist.updateBalance((double)-sumOfBet,secret);
                     }else{errorCode = ERROR_NO_VALID_SUM;}
                 }else{errorCode = ERROR_NO_VALID_RESULT;}
             }else{errorCode = ERROR_NO_SUCH_MATCH;}
         }else {errorCode = ERROR_NO_SUCH_USER;}
 
         basicResponse = new BasicResponse(success,errorCode);
+        return basicResponse;
+    }
+
+    @RequestMapping(value = "update-balance" ,method = {RequestMethod.GET})
+    public BasicResponse updateBalance(String secret, double balanceToAdd){
+        Integer errorCode = null;
+        boolean success = false;
+        if(balanceToAdd>0) {
+            User user = persist.getUserBySecret(secret);
+            if(user!=null){
+                success = true;
+                persist.updateBalance(balanceToAdd,secret);
+            }else{errorCode = ERROR_NO_SUCH_USER;}
+        }else{errorCode = ERROR_NO_VALID_SUM;}
+        BasicResponse basicResponse = new BasicResponse(success,errorCode);
         return basicResponse;
     }
 

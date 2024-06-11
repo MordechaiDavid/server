@@ -111,7 +111,7 @@ public class GeneralController {
         return basicResponse;
     }
 
-    @RequestMapping (value = "update-user", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping (value = "update-user", method = {RequestMethod.POST})
     public BasicResponse updateUser (String username, String password, String password1 ,String email,String secret) {
         BasicResponse basicResponse;
         Integer errorCode = null;
@@ -160,7 +160,7 @@ public class GeneralController {
         return persist.getOldMatches();
     }
 
-    @RequestMapping(value = "add-bet")
+    @RequestMapping(value = "add-bet" , method = {RequestMethod.POST})
     public BasicResponse addBet(int matchId, String secret, int sumOfBet, int result) throws ParseException {
         BasicResponse basicResponse;
         Integer errorCode = null;

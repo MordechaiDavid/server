@@ -1,6 +1,7 @@
 package com.ashcollege;
 
 
+import com.ashcollege.entities.Bet;
 import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Team;
 import com.ashcollege.entities.User;
@@ -140,10 +141,14 @@ public class Persist {
         }
         return futureMatches;
     }
-
-
-
-    public void update(User user){
+    public List <Bet> getBetting (String secret){
+        User user = getUserBySecret(secret);
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Bet WHERE gambler = :user", Bet.class)
+                 .setParameter("user", user)
+                 .list();
+    }
+    public void updateUser(User user){
         try{
             this.sessionFactory.getCurrentSession()
                     .createQuery("UPDATE User SET username = :username, password = :password, email = :email WHERE secret = :secret")

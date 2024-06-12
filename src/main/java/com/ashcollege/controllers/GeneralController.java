@@ -125,7 +125,7 @@ public class GeneralController {
                                 if(user!=null) {
                                     if(!persist.checkUserByUserName(username,secret)){
                                         user = new User(username,password,email,secret);
-                                        persist.update(user);
+                                        persist.updateUser(user);
                                         success = true;}
                                     else{
                                         errorCode = ERROR_USERNAME_TAKEN;}}
@@ -160,7 +160,7 @@ public class GeneralController {
         return persist.getOldMatches();
     }
 
-    @RequestMapping(value = "add-bet" , method = {RequestMethod.GET})
+    @RequestMapping(value = "add-bet" )
     public BasicResponse addBet(int matchId, String secret, int sumOfBet, int result) throws ParseException {
         BasicResponse basicResponse;
         Integer errorCode = null;
@@ -184,7 +184,12 @@ public class GeneralController {
         return basicResponse;
     }
 
-    @RequestMapping(value = "update-balance" ,method = {RequestMethod.GET})
+    @RequestMapping(value = "get-betting")
+    public List<Bet> getBettingOfUser (String secret){
+        return persist.getBetting(secret);
+    }
+
+    @RequestMapping(value = "update-balance" ,method = {RequestMethod.POST})
     public BasicResponse updateBalance(String secret, double balanceToAdd){
         Integer errorCode = null;
         boolean success = false;

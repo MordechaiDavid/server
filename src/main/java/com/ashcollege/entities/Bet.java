@@ -6,7 +6,6 @@ public class Bet {
     private Match match;
     private User gambler;
     private int sumOfBet;
-
     private int result;
 
     public Bet( Match match, User user,int sumOfBet,int result) {

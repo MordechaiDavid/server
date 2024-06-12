@@ -144,7 +144,7 @@ public class Persist {
     public List <Bet> getBetting (String secret){
         User user = getUserBySecret(secret);
         return this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Bet WHERE gambler = :user", Bet.class)
+                .createQuery("FROM Bet WHERE gambler = :user" , Bet.class)
                  .setParameter("user", user)
                  .list();
     }

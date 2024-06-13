@@ -1,6 +1,9 @@
 package com.ashcollege.responses;
 
+import com.ashcollege.entities.User;
+
 public class LoginResponse extends BasicResponse {
+
     private int id;
     private String secret;
 

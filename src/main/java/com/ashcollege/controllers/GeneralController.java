@@ -197,7 +197,7 @@ public class GeneralController {
         BasicResponse basicResponse = null;
         Integer errorCode = null;
         boolean success = false;
-        if(balanceToAdd>0) {
+        if(balanceToAdd>=0) {
             User user = persist.getUserBySecret(secret);
             if(user!=null){
                 success = true;

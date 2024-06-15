@@ -69,17 +69,6 @@ public class FootballMatch {
                                    index ++;
                                 }
                             }
-                            int winner = matchList.get(i).getWinner();
-                            System.out.println("winner is "+winner);
-                            if (winner == 1)
-                                matchList.get(i).getTeam1().setScore(matchList.get(i).getTeam1().getScore()+3);
-                            if (winner == 2)
-                                matchList.get(i).getTeam2().setScore(matchList.get(i).getTeam2().getScore()+3);
-                            else{
-                                matchList.get(i).getTeam1().setScore(matchList.get(i).getTeam1().getScore()+1);
-                                matchList.get(i).getTeam2().setScore(matchList.get(i).getTeam2().getScore()+1);
-                            }
-                            persist.save(matchList.get(i));
                         }
                     }
                 }

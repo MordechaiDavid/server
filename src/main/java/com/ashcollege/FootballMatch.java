@@ -39,9 +39,10 @@ public class FootballMatch {
                             List <Integer> secondsOfGoals = selectSeconds(result);
                             System.out.println(secondsOfGoals);
                             int timePerIterationMillis = 1000;
+                            if(!secondsOfGoals.isEmpty()){
                             int index = 0;
                             for(int time=0; time<=matchDurationSeconds; time++) {
-                                if(time == secondsOfGoals.get(index) && !secondsOfGoals.isEmpty()){
+                                if(time == secondsOfGoals.get(index)  ){
                                 if(matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2)  {
                                     boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
                                     if(currentTurn)
@@ -68,6 +69,7 @@ public class FootballMatch {
                                 if(index< desiredResultTeam1+desiredResultTeam2-1)
                                    index ++;
                                 }
+                            }
                             }
                         }
                     }

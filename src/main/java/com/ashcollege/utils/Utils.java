@@ -36,7 +36,7 @@ public class Utils {
 
             for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
-                calendar.set(Calendar.HOUR_OF_DAY, 5);
+                calendar.set(Calendar.HOUR_OF_DAY, 17);
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);

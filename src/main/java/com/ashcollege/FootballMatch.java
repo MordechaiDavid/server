@@ -31,15 +31,15 @@ public class FootballMatch {
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             int matchDurationSeconds = 30;
+                            Result result = choseWinner(matchList.get(i));
+                            int desiredResultTeam1 = result.getResultTeam1();
+                            int desiredResultTeam2 = result.getResultTeam2();
 
-                            int desiredResultTeam1 = 4;  //should be function that return a result
-                            int desiredResultTeam2 = 3;  //should be function that return a result
-                            Result result = new Result(desiredResultTeam1,desiredResultTeam2);
                             List <Integer> secondsOfGoals = selectSeconds(result);
                             System.out.println(secondsOfGoals);
-                            int timePerIterationMillis = 3000;
-                            int time = 0,index = 0;
-                            while (time < matchDurationSeconds) {
+                            int timePerIterationMillis = 1000;
+                            int index = 0;
+                            for(int time=0; time<=matchDurationSeconds; time++) {
                                 if(time == secondsOfGoals.get(index)){
                                 if(matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2)  {
                                     boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
@@ -67,7 +67,6 @@ public class FootballMatch {
                                 if(index< desiredResultTeam1+desiredResultTeam2-1)
                                    index ++;
                                 }
-                                time ++;
                             }
                             // TO DO:
                             // 1. update attack_level and defence_level of the teams
@@ -95,5 +94,25 @@ public class FootballMatch {
            chosenSeconds.add(seconds.get(i));
         Collections.sort(chosenSeconds);
         return chosenSeconds;
+    }
+
+    public Result choseWinner (Match match){
+        Result result=null;
+        double total = match.getOddsTeam1()+ match.getOddsTeam2()+ match.getOddsDraw();
+        double team1WinChance = match.getOddsTeam1()/total;
+        double team2WinChance= match.getOddsTeam2()/total;
+        double drawChance = match.getOddsDraw()/total;
+       // System.out.println(team1WinChance+" , "+drawChance+" , "+team2WinChance);
+        Random random = new Random();
+        double winner = random.nextDouble();
+      //  System.out.println(winner);
+        if(winner <= team1WinChance)
+            result = new Result(3,1);
+        if(winner>team1WinChance && winner <=drawChance+team1WinChance)
+            result = new Result(1,1);
+        if(winner>drawChance+team1WinChance)
+            result= new Result(2,3);
+
+        return result;
     }
 }

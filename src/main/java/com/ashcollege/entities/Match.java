@@ -101,9 +101,6 @@ public class Match {
     public void setResultTeam2(int resultTeam2) {
         this.resultTeam2 = resultTeam2;
     }
-    public int getWinner() {
-        return winner;
-    }
 
     public double getOddsTeam1() {
         return oddsTeam1;
@@ -129,14 +126,16 @@ public class Match {
         this.oddsDraw = oddsDraw;
     }
 
-    public void setWinner() {
+    public int getWinner() {
         int winner=0;
         if(resultTeam1>resultTeam2)
             winner =1;
         if(resultTeam1<resultTeam2)
             winner =2;
         this.winner = winner;
+        return winner;
     }
+
 
 
 }

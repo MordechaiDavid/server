@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -40,7 +41,7 @@ public class FootballMatch {
                             int timePerIterationMillis = 1000;
                             int index = 0;
                             for(int time=0; time<=matchDurationSeconds; time++) {
-                                if(time == secondsOfGoals.get(index)){
+                                if(time == secondsOfGoals.get(index) && !secondsOfGoals.isEmpty()){
                                 if(matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2)  {
                                     boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
                                     if(currentTurn)
@@ -68,12 +69,22 @@ public class FootballMatch {
                                    index ++;
                                 }
                             }
-                            // TO DO:
-                            // 1. update attack_level and defence_level of the teams
+                            int winner = matchList.get(i).getWinner();
+                            System.out.println("winner is "+winner);
+                            if (winner == 1)
+                                matchList.get(i).getTeam1().setScore(matchList.get(i).getTeam1().getScore()+3);
+                            if (winner == 2)
+                                matchList.get(i).getTeam2().setScore(matchList.get(i).getTeam2().getScore()+3);
+                            else{
+                                matchList.get(i).getTeam1().setScore(matchList.get(i).getTeam1().getScore()+1);
+                                matchList.get(i).getTeam2().setScore(matchList.get(i).getTeam2().getScore()+1);
+                            }
+                            persist.save(matchList.get(i));
                         }
                     }
                 }
             }
+
         };
 
 
@@ -102,17 +113,35 @@ public class FootballMatch {
         double team1WinChance = match.getOddsTeam1()/total;
         double team2WinChance= match.getOddsTeam2()/total;
         double drawChance = match.getOddsDraw()/total;
+        int goalsTeam1 = numOfGoals(match.getTeam1().getAttackLevel(),match.getTeam2().getDefenceLevel());
+        int goalsTeam2 = numOfGoals(match.getTeam2().getAttackLevel(),match.getTeam1().getDefenceLevel());
        // System.out.println(team1WinChance+" , "+drawChance+" , "+team2WinChance);
         Random random = new Random();
         double winner = random.nextDouble();
       //  System.out.println(winner);
-        if(winner <= team1WinChance)
-            result = new Result(3,1);
-        if(winner>team1WinChance && winner <=drawChance+team1WinChance)
-            result = new Result(1,1);
-        if(winner>drawChance+team1WinChance)
-            result= new Result(2,3);
+        if(winner <= team1WinChance){
+          if(goalsTeam1 <=goalsTeam2)
+              goalsTeam1 = goalsTeam2+random.nextInt(2)+1;
+        }
+        if(winner>team1WinChance && winner <=drawChance+team1WinChance){
+            if(goalsTeam1!=goalsTeam2)
+                goalsTeam1 = goalsTeam2;
+        }
+        if(winner>drawChance+team1WinChance){
+            if(goalsTeam2 <= goalsTeam1)
+                goalsTeam2 = goalsTeam1+random.nextInt(2)+1;
+        }
+          result= new Result(goalsTeam1,goalsTeam2);
 
         return result;
+    }
+
+    public int numOfGoals (double attackLevel, double defenceLevel){
+        double ratio = attackLevel / defenceLevel;
+        int maxGoals = 7;
+        Random random = new Random();
+        double sum = random.nextDouble();
+        return (int) Math.round(sum*maxGoals*(ratio/(ratio+1)));
+
     }
 }

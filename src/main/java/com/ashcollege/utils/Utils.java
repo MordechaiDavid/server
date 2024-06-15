@@ -36,11 +36,11 @@ public class Utils {
 
             for (int i = 0; i < 8; i++) {
                 calendar.setTime(today);
-                calendar.set(Calendar.HOUR_OF_DAY, 17);
-                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.HOUR_OF_DAY, 21);
+                calendar.set(Calendar.MINUTE, 36);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
-                calendar.add(Calendar.DAY_OF_MONTH, (i * 2)+1);
+                calendar.add(Calendar.DAY_OF_MONTH, (i * 2));
                 Date currentDate = calendar.getTime();
                 SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
                 String formattedDate = formatter.format(currentDate);

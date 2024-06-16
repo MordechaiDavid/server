@@ -71,7 +71,7 @@ public class FootballMatch {
                                 }
                             }
                                 Date naw = new Date();
-                                System.out.println("End game");
+                                System.out.println("End Game");
                                 System.out.println(naw);
                             }
                         }

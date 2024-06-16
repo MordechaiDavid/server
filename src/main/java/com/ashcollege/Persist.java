@@ -114,7 +114,10 @@ public class Persist {
         for(Match match : allMatches){
             try{
             Date currentDate =simpleDateFormat.parse (match.getDate());
-            if(currentDate.after(today)){
+            // Add 35 seconds to currentDate
+                long thirtySecondsInMillis = 35 * 1000;
+                Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
+            if(matchLiveDate.after(today)){
                 futureMatches.add(match);}
             }
             catch (Exception e){

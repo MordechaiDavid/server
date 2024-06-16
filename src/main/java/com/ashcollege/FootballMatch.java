@@ -31,7 +31,7 @@ public class FootballMatch {
                     List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
-                            int matchDurationSeconds = 29;
+                            int matchDurationSeconds = 30;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();

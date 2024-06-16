@@ -61,13 +61,13 @@ public class FootballMatch {
                                 System.out.println(matchList.get(i).getTeam1().getName()+" "+matchList.get(i).getResultTeam1());
                                 System.out.println(matchList.get(i).getTeam2().getName()+" "+matchList.get(i).getResultTeam2());
 
+                                if(index< desiredResultTeam1+desiredResultTeam2-1)
+                                   index ++;
+                                }
                                 try {
                                     Thread.sleep(timePerIterationMillis);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
-                                }
-                                if(index< desiredResultTeam1+desiredResultTeam2-1)
-                                   index ++;
                                 }
                             }
                             }

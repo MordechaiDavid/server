@@ -106,6 +106,8 @@ public class FootballMatch {
         double drawChance = match.getOddsDraw()/total;
         int goalsTeam1 = numOfGoals(match.getTeam1().getAttackLevel(),match.getTeam2().getDefenceLevel());
         int goalsTeam2 = numOfGoals(match.getTeam2().getAttackLevel(),match.getTeam1().getDefenceLevel());
+        goalsTeam1 = Math.min(goalsTeam1,4);
+        goalsTeam2 = Math.min(goalsTeam2,4);
        // System.out.println(team1WinChance+" , "+drawChance+" , "+team2WinChance);
         Random random = new Random();
         double winner = random.nextDouble();
@@ -129,7 +131,7 @@ public class FootballMatch {
 
     public int numOfGoals (double attackLevel, double defenceLevel){
         double ratio = attackLevel / defenceLevel;
-        int maxGoals = 7;
+        int maxGoals = 6;
         Random random = new Random();
         double sum = random.nextDouble();
         return (int) Math.round(sum*maxGoals*(ratio/(ratio+1)));

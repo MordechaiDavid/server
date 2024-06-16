@@ -31,7 +31,7 @@ public class FootballMatch {
                     List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
-                            int matchDurationSeconds = 30;
+                            int matchDurationSeconds = 29;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
@@ -41,8 +41,8 @@ public class FootballMatch {
                             int timePerIterationMillis = 1000;
                             if(!secondsOfGoals.isEmpty()){
                             int index = 0;
-                            for(int time=0; time<=matchDurationSeconds; time++) {
-                                if(time == secondsOfGoals.get(index)  ){
+                            for(int time=1; time<=matchDurationSeconds; time++) {
+                                if(time == secondsOfGoals.get(index)){
                                 if(matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2)  {
                                     boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
                                     if(currentTurn)
@@ -61,15 +61,18 @@ public class FootballMatch {
                                 System.out.println(matchList.get(i).getTeam1().getName()+" "+matchList.get(i).getResultTeam1());
                                 System.out.println(matchList.get(i).getTeam2().getName()+" "+matchList.get(i).getResultTeam2());
 
+                                if(index< desiredResultTeam1+desiredResultTeam2-1)
+                                   index ++;
+                                }
                                 try {
                                     Thread.sleep(timePerIterationMillis);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                if(index< desiredResultTeam1+desiredResultTeam2-1)
-                                   index ++;
-                                }
                             }
+                                Date naw = new Date();
+                                System.out.println("End Game");
+                                System.out.println(naw);
                             }
                         }
                     }
@@ -89,7 +92,7 @@ public class FootballMatch {
         int totalGoals = result.getResultTeam1()+ result.getResultTeam2();
         List <Integer> seconds = new ArrayList<>();
         List <Integer> chosenSeconds = new ArrayList<>();
-        for(int i=0; i<=30; i++)
+        for(int i=1; i<=30; i++)
             seconds.add(i);
         Collections.shuffle(seconds);
         for(int i=1; i<=totalGoals ;i++)

@@ -29,43 +29,32 @@ public class Utils {
         }
         List<Match> matchList = persist.loadList(Match.class);
         if(matchList.isEmpty()) {
-            String [][] dateArray = new String[7][4];
+            int numOfRounds = 7;
+            int numOfGames = 4;
+            String [][] dateArray = new String[numOfRounds][numOfGames];
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             calendar.add(Calendar.MINUTE, 5);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
-            for (int i = 0; i < 7; i++) {
-                for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < numOfRounds; i++) {
+                for (int j = 0; j < numOfGames; j++) {
                     Date currentDate = calendar.getTime();
                     String formattedDate = formatter.format(currentDate);
                     dateArray[i][j] = formattedDate;
-                    if (j < 3) {
+                    if (j < numOfGames-1) {
                         calendar.add(Calendar.MINUTE, 1);
                     }
                 }
-                if (i < 6) {
+                if (i < numOfRounds-1) {
                     calendar.add(Calendar.MINUTE, 5);
                 }
             }
 
 
-            /*for (int i = 0; i < 8; i++) {
-                calendar.setTime(today);
-                calendar.set(Calendar.HOUR_OF_DAY, 19);
-                calendar.set(Calendar.MINUTE, 59);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
-                calendar.add(Calendar.DAY_OF_MONTH, (i * 2));
-                Date currentDate = calendar.getTime();
-                SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
-                String formattedDate = formatter.format(currentDate);
-                dateList.add(formattedDate);
-            }
-*/
             List<Match> matches = new ArrayList<>();
-            for (int i = 1; i <= 7; i++) {
-                for (int j = 1; j <= 4; j++) {
+            for (int i = 1; i <= numOfRounds; i++) {
+                for (int j = 1; j <= numOfGames; j++) {
                     int teamA= (i+j-2)%7+1;
                     int teamB = (7-(j-1)+i-1)%7+1;
                     if(j-1==0)

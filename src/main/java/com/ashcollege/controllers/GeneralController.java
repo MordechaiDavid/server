@@ -18,13 +18,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.ashcollege.utils.Errors.*;
 
@@ -38,6 +44,8 @@ public class GeneralController {
     private Persist persist;
     @Autowired
     private Utils utils;
+    private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+
 
 
     @RequestMapping (value = "login", method = {RequestMethod.POST})

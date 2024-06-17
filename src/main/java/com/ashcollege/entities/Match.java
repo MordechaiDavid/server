@@ -17,20 +17,15 @@ public class Match {
     private double   oddsDraw;
     private int resultTeam1;
     private int resultTeam2;
-    private int winner;
-    private int corners;
 
-    public Match( Team team1, Team team2, String date) {
-        this.team1 = team1;
-        this.team2 = team2;
-        this.date = date;
-        this.roundNum = -1;
-    }
+
+
     public Match(int roundNum, Team team1,Team team2, String date) {
         this.team1 = team1;
         this.team2 = team2;
         this.date = date;
         this.roundNum = roundNum;
+
     }
     public Match() {
 
@@ -78,14 +73,6 @@ public class Match {
         this.roundNum = round;
     }
 
-    public int getCorners() {
-        return corners;
-    }
-
-    public void setCorners(int corners) {
-        this.corners = corners;
-    }
-
     public int getResultTeam1() {
         return resultTeam1;
     }
@@ -126,16 +113,12 @@ public class Match {
         this.oddsDraw = oddsDraw;
     }
 
-    public int getWinner() {
+    public int choseWinner() {
         int winner=0;
         if(resultTeam1>resultTeam2)
             winner =1;
         if(resultTeam1<resultTeam2)
             winner =2;
-        this.winner = winner;
         return winner;
     }
-
-
-
 }

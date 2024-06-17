@@ -33,7 +33,7 @@ public class Utils {
             int numOfGames = 4;
             String [][] dateArray = new String[numOfRounds][numOfGames];
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            calendar.add(Calendar.MINUTE, 5);
+            calendar.add(Calendar.MINUTE, 1);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");

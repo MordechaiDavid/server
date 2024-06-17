@@ -2,6 +2,7 @@ package com.ashcollege;
 
 import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Result;
+import com.ashcollege.entities.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,9 +71,7 @@ public class FootballMatch {
                                     e.printStackTrace();
                                 }
                             }
-                                Date naw = new Date();
-                                System.out.println("End Game");
-                                System.out.println(naw);
+                                updateData(matchList.get(i),result);
                             }
                         }
                     }
@@ -87,8 +86,33 @@ public class FootballMatch {
 
 
     }
+    private void updateData (Match match,Result result){
+        int gameWinner =match.choseWinner();
+        if(gameWinner == 1){
+            match.getTeam1().setScore(match.getTeam1().getScore()+3);
+        }
+        if(gameWinner==2){
+            match.getTeam2().setScore(match.getTeam2().getScore()+3);
+        }
+        if(gameWinner==0){
+            match.getTeam1().setScore(match.getTeam1().getScore()+1);
+            match.getTeam2().setScore(match.getTeam2().getScore()+1);
+        }
+        match.getTeam1().setGoalsScored(match.getTeam1().getGoalsScored()+result.getResultTeam1());
+        match.getTeam1().setGoalsConcedes(match.getTeam1().getGoalsConcedes()+result.getResultTeam2());
+        match.getTeam2().setGoalsScored(match.getTeam2().getGoalsScored()+result.getResultTeam2());
+        match.getTeam2().setGoalsConcedes(match.getTeam2().getGoalsConcedes()+result.getResultTeam1());
+        match.getTeam1().setAttackLevel(Math.min(1,match.getTeam1().getAttackLevel()+(result.getResultTeam1()*0.02)));
+        match.getTeam2().setAttackLevel(Math.min(1,match.getTeam2().getAttackLevel()+(result.getResultTeam2()*0.02)));
+        match.getTeam1().setDefenceLevel(Math.max(0, match.getTeam1().getDefenceLevel()-(result.getResultTeam2()*0.02)));
+        match.getTeam2().setDefenceLevel(Math.max(0, match.getTeam2().getDefenceLevel()-(result.getResultTeam1()*0.02)));
+        Team teamA = match.getTeam1();
+        Team teamB = match.getTeam2();
+        persist.save(teamA);
+        persist.save(teamB);
+    }
 
-    public List<Integer> selectSeconds (Result result){
+    private List<Integer> selectSeconds (Result result){
         int totalGoals = result.getResultTeam1()+ result.getResultTeam2();
         List <Integer> seconds = new ArrayList<>();
         List <Integer> chosenSeconds = new ArrayList<>();
@@ -101,7 +125,7 @@ public class FootballMatch {
         return chosenSeconds;
     }
 
-    public Result choseWinner (Match match){
+    private Result choseWinner (Match match){
         Result result=null;
         double total = match.getOddsTeam1()+ match.getOddsTeam2()+ match.getOddsDraw();
         double team1WinChance = match.getOddsTeam1()/total;
@@ -111,10 +135,8 @@ public class FootballMatch {
         int goalsTeam2 = numOfGoals(match.getTeam2().getAttackLevel(),match.getTeam1().getDefenceLevel());
         goalsTeam1 = Math.min(goalsTeam1,4);
         goalsTeam2 = Math.min(goalsTeam2,4);
-       // System.out.println(team1WinChance+" , "+drawChance+" , "+team2WinChance);
         Random random = new Random();
         double winner = random.nextDouble();
-      //  System.out.println(winner);
         if(winner <= team1WinChance){
           if(goalsTeam1 <=goalsTeam2)
               goalsTeam1 = goalsTeam2+random.nextInt(2)+1;

@@ -33,7 +33,7 @@ public class Utils {
             int numOfGames = 4;
             String [][] dateArray = new String[numOfRounds][numOfGames];
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            calendar.add(Calendar.MINUTE, 5);
+            calendar.add(Calendar.MINUTE, 2);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
@@ -60,17 +60,15 @@ public class Utils {
                     if(j-1==0)
                         teamB =8;
                    Match match = new Match(i, teams.get(teamA-1), teams.get(teamB-1), dateArray[i-1][j-1]);
-                    calculateOdds(match);
                     matches.add(match);
-                    persist.save(match);
                 }
-
             }
+            calculateOdds(matches);
         }
-
     }
 
-  public void calculateOdds(Match match) {
+  public void calculateOdds(List <Match> matches) {
+        for (Match match : matches){
         double powerA = match.getTeam1().getAttackLevel() - match.getTeam2().getDefenceLevel();
         double powerB = match.getTeam2().getAttackLevel() - match.getTeam1().getDefenceLevel();
         double injuredInA = !match.getTeam1().getIsInjury() ? 0: 0.15;
@@ -112,6 +110,9 @@ public class Utils {
         match.setOddsTeam1(oddsA);
         match.setOddsTeam2(oddsB);
         match.setOddsDraw(oddsDraw);
+        persist.save(match);
+
+        }
     }
 
 

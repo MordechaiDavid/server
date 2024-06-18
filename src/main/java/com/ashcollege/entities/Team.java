@@ -10,7 +10,6 @@ public class Team {
     private double attackLevel;
     private double defenceLevel;
     private boolean isInjury;
-
     private int goalsScored;
     private  int goalsConcedes;
 

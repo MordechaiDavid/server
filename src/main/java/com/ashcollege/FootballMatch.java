@@ -3,6 +3,7 @@ package com.ashcollege;
 import com.ashcollege.entities.Match;
 import com.ashcollege.entities.Result;
 import com.ashcollege.entities.Team;
+import com.ashcollege.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class FootballMatch {
     @Autowired
     Persist persist;
+    @Autowired
+    Utils utils;
 
     @PostConstruct
     public void startMatch() {
@@ -29,52 +32,60 @@ public class FootballMatch {
                     Date currentDate = calendar.getTime();
                     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
                     String currentTime = formatter.format(currentDate);
-                    List<Match> matchList = persist.loadList(Match.class);
+                    int counter =0;
+                    List<Match> matchList = persist.getAvailableMatches();
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             int matchDurationSeconds = 30;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
-
                             List <Integer> secondsOfGoals = selectSeconds(result);
+                            if(secondsOfGoals.isEmpty()){
+                                updateData(matchList.get(i),result);
+                                persist.save(matchList.get(i));
+                            }
                             System.out.println(secondsOfGoals);
                             int timePerIterationMillis = 1000;
-                            if(!secondsOfGoals.isEmpty()){
                             int index = 0;
                             for(int time=1; time<=matchDurationSeconds; time++) {
-                                if(time == secondsOfGoals.get(index)){
-                                if(matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2)  {
-                                    boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
-                                    if(currentTurn)
-                                        matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);
-                                    else
-                                        matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
-                                }
-                                else if (matchList.get(i).getResultTeam1() < desiredResultTeam1) {
-                                    matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);
-                                }
-                                else {
-                                    matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
-                                }
-                                persist.save(matchList.get(i));
-                                System.out.println(time);
-                                System.out.println(matchList.get(i).getTeam1().getName()+" "+matchList.get(i).getResultTeam1());
-                                System.out.println(matchList.get(i).getTeam2().getName()+" "+matchList.get(i).getResultTeam2());
+                                if(!secondsOfGoals.isEmpty()) {
+                                    if (time == secondsOfGoals.get(index)) {
+                                        if (matchList.get(i).getResultTeam1() < desiredResultTeam1 && matchList.get(i).getResultTeam2() < desiredResultTeam2) {
+                                            boolean currentTurn = ThreadLocalRandom.current().nextBoolean();
+                                            if (currentTurn)
+                                                matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);
+                                            else
+                                                matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
+                                        } else if (matchList.get(i).getResultTeam1() < desiredResultTeam1) {
+                                            matchList.get(i).setResultTeam1(matchList.get(i).getResultTeam1() + 1);
+                                        } else {
+                                            matchList.get(i).setResultTeam2(matchList.get(i).getResultTeam2() + 1);
+                                        }
+                                        persist.save(matchList.get(i));
+                                        System.out.println(time);
+                                        System.out.println(matchList.get(i).getTeam1().getName() + " " + matchList.get(i).getResultTeam1());
+                                        System.out.println(matchList.get(i).getTeam2().getName() + " " + matchList.get(i).getResultTeam2());
 
-                                if(index< desiredResultTeam1+desiredResultTeam2-1)
-                                   index ++;
+                                        if (index < desiredResultTeam1 + desiredResultTeam2 - 1)
+                                            index++;
+                                    }
                                 }
+
                                 try {
                                     Thread.sleep(timePerIterationMillis);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                            }
-                                updateData(matchList.get(i),result);
+                                if(time == matchDurationSeconds)
+                                    updateData(matchList.get(i),result);
                             }
                         }
+                        counter++;
+                        if(counter%4==0)
+                            utils.calculateOdds(persist.getAvailableMatches());
                     }
+
                 }
             }
 

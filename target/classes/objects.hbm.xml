@@ -25,6 +25,9 @@
         <property name="score" type="int" column="score"/>
         <property name="attackLevel" type="double" column="attack_level"/>
         <property name="defenceLevel" type="double" column="defence_level"/>
+        <property name="won" type="int" column="wons"/>
+        <property name="drawn" type="int" column="drawn"/>
+        <property name="lost" type="int" column="lost"/>
         <property name="goalsScored" type="int" column="goals_scored"/>
         <property name="goalsConcedes" type="int" column="goals_concedes"/>
     </class>

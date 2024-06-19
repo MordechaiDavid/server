@@ -12,6 +12,9 @@ public class Team {
     private boolean isInjury;
     private int goalsScored;
     private  int goalsConcedes;
+    private int won;
+    private int drawn;
+    private int lost;
 
     public Team(String name) {
         Random random = new Random();
@@ -21,6 +24,9 @@ public class Team {
         this.defenceLevel = random.nextDouble();
         this.goalsScored = 0;
         this.goalsConcedes = 0;
+        this.won = 0 ;
+        this.drawn =0 ;
+        this.lost = 0 ;
         this.isInjury = false;
     }
 
@@ -83,6 +89,30 @@ public class Team {
 
     public void setGoalsConcedes(int goalsConcedes) {
         this.goalsConcedes = goalsConcedes;
+    }
+
+    public int getWon() {
+        return won;
+    }
+
+    public void setWon(int won) {
+        this.won = won;
+    }
+
+    public int getDrawn() {
+        return drawn;
+    }
+
+    public void setDrawn(int drawn) {
+        this.drawn = drawn;
+    }
+
+    public int getLost() {
+        return lost;
+    }
+
+    public void setLost(int lost) {
+        this.lost = lost;
     }
 
     public boolean getIsInjury() {

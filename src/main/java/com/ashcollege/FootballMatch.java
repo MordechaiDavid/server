@@ -41,10 +41,6 @@ public class FootballMatch {
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
                             List <Integer> secondsOfGoals = selectSeconds(result);
-                            if(secondsOfGoals.isEmpty()){
-                                updateData(matchList.get(i),result);
-                                persist.save(matchList.get(i));
-                            }
                             System.out.println(secondsOfGoals);
                             int timePerIterationMillis = 1000;
                             int index = 0;
@@ -101,13 +97,19 @@ public class FootballMatch {
         int gameWinner =match.choseWinner();
         if(gameWinner == 1){
             match.getTeam1().setScore(match.getTeam1().getScore()+3);
+            match.getTeam1().setWon(match.getTeam1().getWon()+1);
+            match.getTeam2().setLost(match.getTeam2().getLost()+1);
         }
         if(gameWinner==2){
             match.getTeam2().setScore(match.getTeam2().getScore()+3);
+            match.getTeam1().setLost(match.getTeam1().getLost()+1);
+            match.getTeam2().setWon(match.getTeam2().getWon()+1);
         }
         if(gameWinner==0){
             match.getTeam1().setScore(match.getTeam1().getScore()+1);
             match.getTeam2().setScore(match.getTeam2().getScore()+1);
+            match.getTeam1().setDrawn(match.getTeam1().getDrawn()+1);
+            match.getTeam2().setDrawn(match.getTeam2().getDrawn()+1);
         }
         match.getTeam1().setGoalsScored(match.getTeam1().getGoalsScored()+result.getResultTeam1());
         match.getTeam1().setGoalsConcedes(match.getTeam1().getGoalsConcedes()+result.getResultTeam2());

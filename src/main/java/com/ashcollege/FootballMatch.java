@@ -1,8 +1,6 @@
 package com.ashcollege;
 
-import com.ashcollege.entities.Match;
-import com.ashcollege.entities.Result;
-import com.ashcollege.entities.Team;
+import com.ashcollege.entities.*;
 import com.ashcollege.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -76,6 +74,10 @@ public class FootballMatch {
                                 if(time == matchDurationSeconds)
                                     updateData(matchList.get(i),result);
                             }
+                            List <Bet> bettingOnMatch = persist.getBettingOnGame(matchList.get(i).getId());
+                            if(!bettingOnMatch.isEmpty())
+                                updateBalanceOfWinner(bettingOnMatch);
+
                         }
                         counter++;
                         if(counter%4==0)
@@ -92,6 +94,23 @@ public class FootballMatch {
         matchThread.start();
 
 
+    }
+
+    private void updateBalanceOfWinner (List<Bet> betList){
+        for(Bet bet : betList){
+            int winner = bet.getMatch().choseWinner();
+            if(winner == bet.getResult()){
+                String secret = bet.getGambler().getSecret();
+                double updateSum= bet.getSumOfBet();
+                if(winner==0)
+                    updateSum *= bet.getMatch().getOddsDraw();
+                if(winner==1)
+                    updateSum *= bet.getMatch().getOddsTeam1();
+                if(winner==2)
+                    updateSum *= bet.getMatch().getOddsTeam2();
+                persist.updateBalance(updateSum,secret);
+            }
+        }
     }
     private void updateData (Match match,Result result){
         int gameWinner =match.choseWinner();
@@ -119,6 +138,14 @@ public class FootballMatch {
         match.getTeam2().setAttackLevel(Math.min(1,match.getTeam2().getAttackLevel()+(result.getResultTeam2()*0.02)));
         match.getTeam1().setDefenceLevel(Math.max(0, match.getTeam1().getDefenceLevel()-(result.getResultTeam2()*0.02)));
         match.getTeam2().setDefenceLevel(Math.max(0, match.getTeam2().getDefenceLevel()-(result.getResultTeam1()*0.02)));
+        if(match.getTeam1().getGoalsScored()==0){
+            match.getTeam1().setAttackLevel(Math.max(0,match.getTeam1().getAttackLevel()-0.05));
+            match.getTeam2().setDefenceLevel(Math.min(0,match.getTeam2().getDefenceLevel()+0.05));
+        }
+        if(match.getTeam2().getGoalsScored()==0){
+            match.getTeam1().setDefenceLevel(Math.min(0,match.getTeam1().getDefenceLevel()+0.05));
+            match.getTeam2().setAttackLevel(Math.max(0,match.getTeam2().getAttackLevel()-0.05));
+        }
         Team teamA = match.getTeam1();
         Team teamB = match.getTeam2();
         persist.save(teamA);

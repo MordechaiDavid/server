@@ -171,6 +171,13 @@ public class Persist {
                  .setParameter("user", user)
                  .list();
     }
+    public List <Bet> getBettingOnGame (int gameId){
+        Match match = getMatchesById(gameId);
+        return this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Bet WHERE match = :match" , Bet.class)
+                .setParameter("match", match)
+                .list();
+    }
     public void updateUser(User user){
         try{
             this.sessionFactory.getCurrentSession()

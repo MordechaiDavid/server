@@ -113,10 +113,8 @@ public class Persist {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
         for(Match match : allMatches){
             try{
-            Date currentDate =simpleDateFormat.parse (match.getDate());
-                long thirtySecondsInMillis = 35 * 1000;
-                Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
-                if(matchLiveDate.after(today)){
+            Date currentDate = simpleDateFormat.parse (match.getDate());
+                if(currentDate.after(today)){
                     futureMatches.add(match);}
             }
             catch (Exception e){
@@ -135,7 +133,7 @@ public class Persist {
             try{
                 Date currentDate =simpleDateFormat.parse (match.getDate());
                 // Add 35 seconds to currentDate
-                long thirtySecondsInMillis = 35 * 1000;
+                long thirtySecondsInMillis = 30 * 1000;
                 Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
                 if(matchLiveDate.after(today)){
                     futureMatches.add(match);}
@@ -155,7 +153,9 @@ public class Persist {
         for(Match match : allMatches){
             try{
                 Date currentDate =simpleDateFormat.parse (match.getDate());
-                if(currentDate.before(today)){
+                long thirtySecondsInMillis = 30 * 1000;
+                Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
+                if(matchLiveDate.before(today)){
                     futureMatches.add(match);}
             }
             catch (Exception e){

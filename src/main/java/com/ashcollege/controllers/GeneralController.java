@@ -160,10 +160,11 @@ public class GeneralController {
         return persist.getAllTeams();
     }
 
-    @RequestMapping (value = "get-matches")
-    public List<Match> getMatches(){
-        return persist.getAvailableMatches();
-    }
+    @RequestMapping (value = "get-available-matches")
+    public List<Match> getMatches(){return persist.getAvailableMatches();}
+
+    @RequestMapping (value = "get-live-match")
+    public List<Match> getLiveMatches(){return persist.getAvailableLiveMatches();}
 
     @RequestMapping (value = "get-old-matches")
     public List<Match> getOldMatches(){

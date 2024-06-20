@@ -31,7 +31,7 @@ public class FootballMatch {
                     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
                     String currentTime = formatter.format(currentDate);
                     int counter =0;
-                    List<Match> matchList = persist.getAvailableMatches();
+                    List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
                             int matchDurationSeconds = 30;

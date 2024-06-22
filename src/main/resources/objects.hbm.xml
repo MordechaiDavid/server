@@ -30,6 +30,7 @@
         <property name="lost" type="int" column="lost"/>
         <property name="goalsScored" type="int" column="goals_scored"/>
         <property name="goalsConcedes" type="int" column="goals_concedes"/>
+        <property name="isInjury" type="boolean" column="is_injury"/>
     </class>
 
 

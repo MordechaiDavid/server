@@ -23,6 +23,7 @@ public class FootballMatch {
         Runnable matchProgression = new Runnable() {
             @Override
             public void run() {
+                int counter = 0;
                 while (true) {
                     Date today = new Date();
                     Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -30,15 +31,15 @@ public class FootballMatch {
                     Date currentDate = calendar.getTime();
                     SimpleDateFormat formatter = new SimpleDateFormat("d/M/yy H:mm:ss");
                     String currentTime = formatter.format(currentDate);
-                    int counter =0;
                     List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
+                            counter++;
                             int matchDurationSeconds = 30;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
-                            List <Integer> secondsOfGoals = selectSeconds(result);
+                            List <Integer> secondsOfGoals = selectNumbers(desiredResultTeam1+desiredResultTeam2,1);
                             System.out.println(secondsOfGoals);
                             int timePerIterationMillis = 1000;
                             int index = 0;
@@ -79,21 +80,25 @@ public class FootballMatch {
                                 updateBalanceOfWinner(bettingOnMatch);
 
                         }
-                        counter++;
-                        if(counter%4==0)
+                        if(counter%4==0 && counter > 0){
+                            //System.out.println("counter is "+counter);
+                            Random random = new Random();
+                            int numOfTeams = random.nextInt(8);
+                            System.out.println("random is "+numOfTeams);
+                            if(numOfTeams > 0) {
+                                List<Integer> selectedNumbers = selectNumbers(numOfTeams, 2);
+                                System.out.println("change boolean in " + selectedNumbers);
+                                updateInjury(selectedNumbers);
+                            }
                             utils.calculateOdds(persist.getAvailableMatches());
+                            counter =0;
+                        }
                     }
-
                 }
             }
-
         };
-
-
         Thread matchThread = new Thread(matchProgression);
         matchThread.start();
-
-
     }
 
     private void updateBalanceOfWinner (List<Bet> betList){
@@ -151,18 +156,26 @@ public class FootballMatch {
         persist.save(teamA);
         persist.save(teamB);
     }
-
-    private List<Integer> selectSeconds (Result result){
-        int totalGoals = result.getResultTeam1()+ result.getResultTeam2();
-        List <Integer> seconds = new ArrayList<>();
-        List <Integer> chosenSeconds = new ArrayList<>();
-        for(int i=1; i<=30; i++)
-            seconds.add(i);
-        Collections.shuffle(seconds);
-        for(int i=1; i<=totalGoals ;i++)
-           chosenSeconds.add(seconds.get(i));
-        Collections.sort(chosenSeconds);
-        return chosenSeconds;
+private void updateInjury (List <Integer> numbers){
+        List <Team> teamList = persist.loadList(Team.class);
+        for(int i =0; i<numbers.size(); i++){
+            int chosenTeam = numbers.get(i)-1;
+            Team team = teamList.get(chosenTeam);
+            team.setIsInjury(!teamList.get(chosenTeam).getIsInjury());
+            persist.save(team);
+        }
+}
+    private List<Integer> selectNumbers (int total ,int id){
+        int runTo = id == 1 ? 30 : 8;
+        List <Integer> origin = new ArrayList<>();
+        List <Integer> chosenNumbers = new ArrayList<>();
+        for(int i=1; i<=runTo; i++)
+            origin.add(i);
+        Collections.shuffle(origin);
+        for(int i=1; i<=total ;i++)
+           chosenNumbers.add(origin.get(i));
+        Collections.sort(chosenNumbers);
+        return chosenNumbers;
     }
 
     private Result choseWinner (Match match){

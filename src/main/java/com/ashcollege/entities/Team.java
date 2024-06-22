@@ -119,7 +119,7 @@ public class Team {
         return isInjury;
     }
 
-    public void setInjury(boolean injury) {
+    public void setIsInjury(boolean injury) {
         isInjury = injury;
     }
 }

@@ -160,16 +160,8 @@ public class GeneralController {
         return persist.getAllTeams();
     }
 
-    @RequestMapping (value = "get-available-matches")
-    public List<Match> getMatches(){return persist.getAvailableMatches();}
-
-    @RequestMapping (value = "get-live-match")
-    public List<Match> getLiveMatches(){return persist.getAvailableLiveMatches();}
-
-    @RequestMapping (value = "get-old-matches")
-    public List<Match> getOldMatches(){
-        return persist.getOldMatches();
-    }
+    @RequestMapping (value = "get-matches-by-type")
+    public List<Match> getMatchesByType(String type){return persist.getMatchesByType(type);}
 
     @RequestMapping(value = "add-bet" )
     public BasicResponse addBet(int matchId, String secret, int sumOfBet, int result) throws ParseException {

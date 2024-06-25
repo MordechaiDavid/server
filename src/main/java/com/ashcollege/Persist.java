@@ -105,65 +105,33 @@ public class Persist {
         return this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Team t ORDER BY  t.score DESC ,t.goalsScored-t.goalsConcedes DESC ,t.goalsScored DESC ,t.name").list();
     }
-    public List<Match> getAvailableMatches() {
-        List<Match> allMatches = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Match").list();
-        List <Match> futureMatches = new ArrayList<>();
+
+    public List<Match> getMatchesByType(String matchType) {
+        List<Match> allMatches = loadList(Match.class);
+        List<Match> resultMatches = new ArrayList<>();
         Date today = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
-        for(Match match : allMatches){
-            try{
-            Date currentDate = simpleDateFormat.parse (match.getDate());
-                if(currentDate.after(today)){
-                    futureMatches.add(match);}
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        return futureMatches;
-    }
-    public List<Match> getAvailableLiveMatches() {
-        List<Match> allMatches = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Match").list();
-        List <Match> futureMatches = new ArrayList<>();
-        Date today = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
-        for(Match match : allMatches){
-            try{
-                Date currentDate =simpleDateFormat.parse (match.getDate());
-                // Add 35 seconds to currentDate
+
+        for (Match match : allMatches) {
+            try {
+                Date matchDate = simpleDateFormat.parse(match.getDate());
                 long thirtySecondsInMillis = 30 * 1000;
-                Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
-                if(matchLiveDate.after(today)){
-                    futureMatches.add(match);}
-            }
-            catch (Exception e){
+                Date matchLiveDate = new Date(matchDate.getTime() + thirtySecondsInMillis);
+
+                if (matchType.equals("available") && matchDate.after(today)) {
+                    resultMatches.add(match);
+                } else if (matchType.equals("live") && matchLiveDate.after(today)) {
+                    resultMatches.add(match);
+                } else if (matchType.equals("old") && matchLiveDate.before(today)) {
+                    resultMatches.add(match);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return futureMatches;
+        return resultMatches;
     }
-    public List<Match> getOldMatches() {
-        List<Match> allMatches = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Match").list();
-        List <Match> futureMatches = new ArrayList<>();
-        Date today = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
-        for(Match match : allMatches){
-            try{
-                Date currentDate =simpleDateFormat.parse (match.getDate());
-                long thirtySecondsInMillis = 30 * 1000;
-                Date matchLiveDate = new Date(currentDate.getTime() + thirtySecondsInMillis);
-                if(matchLiveDate.before(today)){
-                    futureMatches.add(match);}
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        return futureMatches;
-    }
+
     public List <Bet> getBetting (String secret){
         User user = getUserBySecret(secret);
         return this.sessionFactory.getCurrentSession()

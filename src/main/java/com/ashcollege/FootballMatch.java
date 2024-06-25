@@ -23,8 +23,8 @@ public class FootballMatch {
         Runnable matchProgression = new Runnable() {
             @Override
             public void run() {
-                int counter = 0;
-                while (true) {
+                int matchesInRound = 0 , roundNum = 1;
+                while (roundNum < 8) {
                     Date today = new Date();
                     Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
                     calendar.setTime(today);
@@ -34,12 +34,12 @@ public class FootballMatch {
                     List<Match> matchList = persist.loadList(Match.class);
                     for (int i = 0; i < matchList.size(); i++) {
                         if (matchList.get(i).getDate().equals(currentTime)){
-                            counter++;
+                            matchesInRound++;
                             int matchDurationSeconds = 30;
                             Result result = choseWinner(matchList.get(i));
                             int desiredResultTeam1 = result.getResultTeam1();
                             int desiredResultTeam2 = result.getResultTeam2();
-                            List <Integer> secondsOfGoals = selectNumbers(desiredResultTeam1+desiredResultTeam2,1);
+                            List <Integer> secondsOfGoals = selectNumbers(desiredResultTeam1+desiredResultTeam2,30);
                             System.out.println(secondsOfGoals);
                             int timePerIterationMillis = 1000;
                             int index = 0;
@@ -80,18 +80,19 @@ public class FootballMatch {
                                 updateBalanceOfWinner(bettingOnMatch);
 
                         }
-                        if(counter%4==0 && counter > 0){
-                            //System.out.println("counter is "+counter);
+                        if(matchesInRound ==4){
                             Random random = new Random();
                             int numOfTeams = random.nextInt(8);
                             System.out.println("random is "+numOfTeams);
                             if(numOfTeams > 0) {
-                                List<Integer> selectedNumbers = selectNumbers(numOfTeams, 2);
+                                List<Integer> selectedNumbers = selectNumbers(numOfTeams, 8);
                                 System.out.println("change boolean in " + selectedNumbers);
                                 updateInjury(selectedNumbers);
                             }
-                            utils.calculateOdds(persist.getAvailableMatches());
-                            counter =0;
+                            utils.calculateOdds(persist.getMatchesByType("available"));
+                            roundNum++;
+                            System.out.println("Round num "+roundNum+ " begin");
+                            matchesInRound =0;
                         }
                     }
                 }
@@ -165,11 +166,10 @@ private void updateInjury (List <Integer> numbers){
             persist.save(team);
         }
 }
-    private List<Integer> selectNumbers (int total ,int id){
-        int runTo = id == 1 ? 30 : 8;
+    private List<Integer> selectNumbers (int total ,int range){
         List <Integer> origin = new ArrayList<>();
         List <Integer> chosenNumbers = new ArrayList<>();
-        for(int i=1; i<=runTo; i++)
+        for(int i=1; i<=range; i++)
             origin.add(i);
         Collections.shuffle(origin);
         for(int i=1; i<=total ;i++)

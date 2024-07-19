@@ -175,7 +175,7 @@ public class GeneralController {
                 if(isValidResult(result)){
                     if(isValidSum(sumOfBet, user.getBalance())){
                         success = true;
-                        Bet bet = new Bet(match,user, sumOfBet ,result);
+                        Bet bet = new Bet(match,user, sumOfBet ,result,winRatioInput(result,match));
                         persist.save(bet);
                         persist.updateBalance((double)-sumOfBet,secret);
                         basicResponse = new BalanceResponse(success,null,persist.getUserBySecret(secret));
@@ -231,6 +231,16 @@ public class GeneralController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d/M/yy H:mm:ss");
         Date currentDate =simpleDateFormat.parse (match.getDate());
         return currentDate.after(today);
+    }
+
+    private double winRatioInput(int result,Match match){
+        double winRatio = match.getOddsDraw();
+        if (result == 1)
+            winRatio = match.getOddsTeam1();;
+        if( result ==2)
+            winRatio = match.getOddsTeam2();
+
+        return winRatio;
     }
 }
 

@@ -91,7 +91,6 @@ public class FootballMatch {
                             }
                             utils.calculateOdds(persist.getMatchesByType("available"));
                             roundNum++;
-                            System.out.println("Round num "+roundNum+ " begin");
                             matchesInRound =0;
                         }
                     }
@@ -107,13 +106,7 @@ public class FootballMatch {
             int winner = bet.getMatch().choseWinner();
             if(winner == bet.getResult()){
                 String secret = bet.getGambler().getSecret();
-                double updateSum= bet.getSumOfBet();
-                if(winner==0)
-                    updateSum *= bet.getMatch().getOddsDraw();
-                if(winner==1)
-                    updateSum *= bet.getMatch().getOddsTeam1();
-                if(winner==2)
-                    updateSum *= bet.getMatch().getOddsTeam2();
+                double updateSum= bet.getSumOfBet()*bet.getWinRatio();
                 persist.updateBalance(updateSum,secret);
             }
         }

@@ -7,12 +7,14 @@ public class Bet {
     private User gambler;
     private int sumOfBet;
     private int result;
+    private double winRatio;
 
-    public Bet( Match match, User user,int sumOfBet,int result) {
+    public Bet( Match match, User user,int sumOfBet,int result, double winRatio) {
         this.match = match;
         this.gambler = user;
         this.sumOfBet = sumOfBet;
         this.setResult(result);
+        this.winRatio = winRatio;
     }
 
     public Bet() {
@@ -50,6 +52,10 @@ public class Bet {
     public void setSumOfBet(int sumOfBet) {
         this.sumOfBet = sumOfBet;
     }
+
+    public double getWinRatio() {return winRatio;}
+
+    public void setWinRatio(double winRatio) {this.winRatio = winRatio;}
 
     public int getResult() {
         return result;

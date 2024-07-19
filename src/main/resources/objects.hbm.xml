@@ -57,6 +57,8 @@
         <many-to-one name="gambler" column="gambler_id" class="com.ashcollege.entities.User"/>
         <property name="sumOfBet" type="int" column="sum_of_bet"/>
         <property name="result" type="int" column="result"/>
+        <property name="winRatio" type="double" column="win_ratio"/>
+
     </class>
 
 
